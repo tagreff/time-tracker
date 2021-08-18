@@ -10,7 +10,7 @@ import java.time.LocalDate;
  * Class Task
  *
  * @author Igor Rogachev
- * @version 0.0.1
+ * @version 0.0.2
  * created on 18.08.2021
  */
 

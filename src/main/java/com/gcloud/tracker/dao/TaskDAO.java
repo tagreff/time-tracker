@@ -15,7 +15,7 @@ import java.util.Optional;
  * Class Task
  *
  * @author Igor Rogachev
- * @version 0.0.1
+ * @version 0.0.2
  * created on 18.08.2021
  */
 
@@ -32,12 +32,12 @@ public class TaskDAO {
 
     private final static Logger log = LoggerFactory.getLogger(TaskDAO.class);
 
-    private static final String SQL_FIND_TASK_BY_ID = "SELECT * FROM tasks WHERE id=?";
-    private static final String SQL_FIND_ALL_TASK = "SELECT * FROM tasks";
-    private static final String SQL_FIND_TASK_BY_USER_ID_AND_DATE = "SELECT * FROM tasks WHERE user_id = ? AND date = ?";
-    private static final String SQL_CREATE_TASK = "INSERT INTO tasks(user_id, date, description, hours, minutes) VALUES (?, ?, ?, ?, ?)";
-    private static final String SQL_EDIT_TASK = "UPDATE tasks SET user_id=?, date=?, description=?, hours=?, minutes=? WHERE id=?";
-    private static final String SQL_DELETE_TASK = "DELETE FROM tasks WHERE id=?";
+    private static final String SQL_FIND_TASK_BY_ID = "SELECT * FROM time_tracker.tasks WHERE id=?";
+    private static final String SQL_FIND_ALL_TASK = "SELECT * FROM time_tracker.tasks";
+    private static final String SQL_FIND_TASK_BY_USER_ID_AND_DATE = "SELECT * FROM time_tracker.tasks WHERE user_id = ? AND date = ?";
+    private static final String SQL_CREATE_TASK = "INSERT INTO time_tracker.tasks(user_id, date, description, hours, minutes) VALUES (?, ?, ?, ?, ?)";
+    private static final String SQL_EDIT_TASK = "UPDATE time_tracker.tasks SET user_id=?, date=?, description=?, hours=?, minutes=? WHERE id=?";
+    private static final String SQL_DELETE_TASK = "DELETE FROM time_tracker.tasks WHERE id=?";
 
     public List<Task> getAll() {
         List<Task> tasks = new ArrayList<>();
@@ -55,7 +55,7 @@ public class TaskDAO {
         return tasks;
     }
 
-    public Task getById(Integer id) {
+    public Optional<Task> getById(Integer id) {
         Task task = null;
         try (
                 Connection conn = ConnectionMaker.getInstance().getConnection();
@@ -76,7 +76,7 @@ public class TaskDAO {
         } catch (ClassNotFoundException e) {
             log.error("Can't find database driver", e);
         }
-        return task;
+        return Optional.of(task);
     }
 
     public List<Task> findTaskByUserIdAndDate(Integer userId, LocalDate date){
@@ -100,7 +100,7 @@ public class TaskDAO {
     public void create(Task task) {
         try (
                 Connection conn = ConnectionMaker.getInstance().getConnection();
-                PreparedStatement ps = conn.prepareStatement(SQL_CREATE_TASK);
+                PreparedStatement ps = conn.prepareStatement(SQL_CREATE_TASK)
         ) {
             ps.setInt(1, task.getUserId());
             ps.setDate(2, Date.valueOf(task.getDate()));
