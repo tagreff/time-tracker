@@ -1,6 +1,8 @@
 package com.gcloud.tracker.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
@@ -13,18 +15,15 @@ import java.time.LocalDate;
  */
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Task {
 
     private Integer id;
+    private Integer userId;
     private LocalDate date;
     private String description;
     private Integer hours;
     private Integer minutes;
 
-    public Task(LocalDate date, String description, Integer hours, Integer minutes) {
-        this.date = date;
-        this.description = description;
-        this.hours = hours;
-        this.minutes = minutes;
-    }
 }

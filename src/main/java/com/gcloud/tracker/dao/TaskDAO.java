@@ -1,15 +1,11 @@
 package com.gcloud.tracker.dao;
 
-
 import com.gcloud.tracker.model.Task;
-import com.gcloud.tracker.model.User;
 import com.gcloud.tracker.util.ConnectionMaker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,70 +31,135 @@ public class TaskDAO {
     }
 
     private final static Logger log = LoggerFactory.getLogger(TaskDAO.class);
-    private static ConnectionMaker connection = null;
 
-    static {
-        try {
-            connection = ConnectionMaker.getInstance();
-        } catch (SQLException sql) {
-            log.error("SQLException", sql);
+    private static final String SQL_FIND_TASK_BY_ID = "SELECT * FROM tasks WHERE id=?";
+    private static final String SQL_FIND_ALL_TASK = "SELECT * FROM tasks";
+    private static final String SQL_FIND_TASK_BY_USER_ID_AND_DATE = "SELECT * FROM tasks WHERE user_id = ? AND date = ?";
+    private static final String SQL_CREATE_TASK = "INSERT INTO tasks(user_id, date, description, hours, minutes) VALUES (?, ?, ?, ?, ?)";
+    private static final String SQL_EDIT_TASK = "UPDATE tasks SET user_id=?, date=?, description=?, hours=?, minutes=? WHERE id=?";
+    private static final String SQL_DELETE_TASK = "DELETE FROM tasks WHERE id=?";
+
+    public List<Task> getAll() {
+        List<Task> tasks = new ArrayList<>();
+        try (
+             Connection conn = ConnectionMaker.getInstance().getConnection();
+             Statement statement = conn.createStatement()
+        ) {
+            ResultSet resultSet = statement.executeQuery(SQL_FIND_ALL_TASK);
+            getListTasks(tasks, resultSet);
+        } catch (SQLException se) {
+            log.error("Can't connect to database", se);
         } catch (ClassNotFoundException e) {
-            log.error("ClassNotFoundException!", e);
+            log.error("Can't find database driver", e);
         }
+        return tasks;
     }
 
-    private static final String SQL_FIND_TASK_BY_ID = "SELECT * FROM task WHERE id=?";
-    private static final String SQL_FIND_ALL_TASK = "SELECT * FROM task";
-    private static final String SQL_CREATE_TASK = "INSERT INTO users(user_id, date, description, hours, minutes) VALUES (?, ?, ?, ?, ?)";
-    private static final String SQL_EDIT_TASK = "UPDATE task SET user_id=?, date=?, description=?, hours=?, minutes=? WHERE id=?";
-    private static final String SQL_DELETE_TASK = "DELETE FROM task WHERE id=?";
-
-    @Override
-    public List getAll() {
-        return null;
-    }
-
-    @Override
     public Optional getById(Integer id) {
         Task task = null;
-        try {
-            PreparedStatement preparedStatement = connection.getConnection().prepareStatement(SQL_FIND_TASK_BY_ID);
-            preparedStatement.setInt(1, id);
-            ResultSet resultSet = preparedStatement.executeQuery();
+        try (
+                Connection conn = ConnectionMaker.getInstance().getConnection();
+                PreparedStatement ps = conn.prepareStatement(SQL_FIND_TASK_BY_ID);
+        ) {
+            ps.setInt(1, id);
+            ResultSet resultSet = ps.executeQuery();
             while (resultSet.next()){
-                String user_id = resultSet.getString("user_id");
-                String date = resultSet.getString("date");
+                Integer user_id = resultSet.getInt("user_id");
+                LocalDate date = Date.valueOf(resultSet.getString("date")).toLocalDate();
+                String description = resultSet.getString("description");
                 Integer hour = resultSet.getInt("hours");
                 Integer minutes = resultSet.getInt("minutes");
-                task = new Task(id, user_id, date, hour, minutes);
+                task = new Task(id, user_id, date, description, hour, minutes);
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (SQLException se) {
+            log.error("Can't connect to database", se);
+        } catch (ClassNotFoundException e) {
+            log.error("Can't find database driver", e);
         }
-        return user;
+        return Optional.ofNullable(task);
     }
 
-    public List<Task> findTaskByUserIdAndDate(Integer id, LocalDate date){
-        return new ArrayList<>();
+    public List<Task> findTaskByUserIdAndDate(Integer userId, LocalDate date){
+        List<Task> tasks = new ArrayList<>();
+        try (
+                Connection conn = ConnectionMaker.getInstance().getConnection();
+                PreparedStatement ps = conn.prepareStatement(SQL_FIND_TASK_BY_USER_ID_AND_DATE);
+        ) {
+            ps.setInt(1, userId);
+            ps.setDate(2, Date.valueOf(date));
+            ResultSet resultSet = ps.executeQuery();
+            getListTasks(tasks, resultSet);
+        } catch (SQLException se) {
+            log.error("Can't connect to database", se);
+        } catch (ClassNotFoundException e) {
+            log.error("Can't find database driver", e);
+        }
+        return tasks;
     }
 
-    @Override
-    public Optional create(AbstractDAO entity) {
-        return Optional.empty();
+    public void create(Task task) {
+        try (
+                Connection conn = ConnectionMaker.getInstance().getConnection();
+                PreparedStatement ps = conn.prepareStatement(SQL_CREATE_TASK);
+        ) {
+            ps.setInt(1, task.getUserId());
+            ps.setDate(2, Date.valueOf(task.getDate()));
+            ps.setString(3, task.getDescription());
+            ps.setInt(4, task.getHours());
+            ps.setInt(5, task.getMinutes());
+            ps.executeUpdate();
+            conn.commit();
+        } catch (SQLException se) {
+            log.error("Can't connect to database", se);
+        } catch (ClassNotFoundException e) {
+            log.error("Can't find database driver", e);
+        }
     }
 
-    @Override
-    public Optional edit(AbstractDAO entity) {
-        return Optional.empty();
+    public void edit(Task task) {
+        try (
+                Connection conn = ConnectionMaker.getInstance().getConnection();
+                PreparedStatement ps = conn.prepareStatement(SQL_EDIT_TASK)
+        ) {
+            ps.setInt(1, task.getUserId());
+            ps.setDate(2, Date.valueOf(task.getDate()));
+            ps.setString(3, task.getDescription());
+            ps.setInt(4, task.getHours());
+            ps.setInt(5, task.getMinutes());
+            ps.setInt(6, task.getId());
+            ps.executeUpdate();
+            conn.commit();
+        } catch (SQLException se) {
+            log.error("Can't connect to database", se);
+        } catch (ClassNotFoundException e) {
+            log.error("Can't find database driver", e);
+        }
     }
 
-    @Override
-    public void deleteById(Long id) {
-
+    public void deleteById(Integer id) {
+        try (
+                Connection conn = ConnectionMaker.getInstance().getConnection();
+                PreparedStatement ps = conn.prepareStatement(SQL_DELETE_TASK)
+        ) {
+            ps.setInt(1, id);
+            conn.commit();
+        } catch (SQLException se) {
+            log.error("Can't connect to database", se);
+        } catch (ClassNotFoundException e) {
+            log.error("Can't find database driver", e);
+        }
     }
 
-    @Override
-    public boolean existsById(Long id) {
-        return false;
+    private void getListTasks(List<Task> tasks, ResultSet resultSet) throws SQLException {
+        while (resultSet.next()) {
+            Task task = new Task();
+            task.setId(resultSet.getInt("id"));
+            task.setUserId(resultSet.getInt("user_id"));
+            task.setDate(resultSet.getDate("date").toLocalDate());
+            task.setDescription(resultSet.getString("description"));
+            task.setHours(resultSet.getInt("hours"));
+            task.setMinutes(resultSet.getInt("minutes"));
+            tasks.add(task);
+        }
     }
 }
