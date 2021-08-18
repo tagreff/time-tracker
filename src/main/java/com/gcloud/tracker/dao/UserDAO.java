@@ -11,6 +11,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Optional;
 
+/**
+ * Class UserDAO
+ *
+ * Data Access Object.
+ *
+ * @author Oleksandr Storozhuk
+ * @version 0.0.2
+ * created on 18.08.2021
+ */
 public class UserDAO {
     private static final Logger log = LoggerFactory.getLogger(UserDAO.class);
 
@@ -19,6 +28,11 @@ public class UserDAO {
             "(login, first_name, last_name, password, role_id)  VALUES (?, ?, ?, ?, ?)";
 
 
+    /**
+     * Find user by login
+     * @param login - unique user login string
+     * @return <code>User</code> wrapped into <code>Optional</code> if exists, else Optional.empty().
+     */
     public Optional<User> findByLogin(String login){
         try (Connection conn = ConnectionMaker.getInstance().getConnection()) {
 
@@ -43,6 +57,11 @@ public class UserDAO {
         return Optional.empty();
     }
 
+    /**
+     * Add User to data source.
+     * @param user - user to add.
+     * @return true if success, else false.
+     */
     public boolean addUser(User user) {
         if(user == null )
             return false;
