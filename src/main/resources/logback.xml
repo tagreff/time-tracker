@@ -1,0 +1,25 @@
+<configuration debug="false">
+    <property name="logDir" value="time-tracker" />
+    <appender name="app" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>../logs/${logDir}/app.log</file>
+        <append>true</append>
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%-5level] %msg%n</pattern>
+        </encoder>
+        <rollingPolicy
+                class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+            <FileNamePattern>../logs/${logDir}/app.%i.log.zip</FileNamePattern>
+            <MinIndex>1</MinIndex>
+            <MaxIndex>5</MaxIndex>
+        </rollingPolicy>
+
+        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+            <maxFileSize>1MB</maxFileSize>
+        </triggeringPolicy>
+    </appender>
+
+    <root level="info">
+        <appender-ref ref="app" />
+    </root>
+
+</configuration>
