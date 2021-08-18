@@ -14,7 +14,7 @@ public class UserDAO {
         return Optional.ofNullable(new User());
     }
 
-    public List<Task> findTaskByUserIdAndDate(Integer id, LocalDate date){
-        return new ArrayList<>();
-    }
+
+
+
 }
