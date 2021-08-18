@@ -15,6 +15,9 @@ public class UserDAO {
     private static final Logger log = LoggerFactory.getLogger(UserDAO.class);
 
     private final String SQL_FIND_BY_LOGIN = "SELECT * FROM time_tracker.users WHERE login=?";
+    private final String SQL_ADD_USER = "INSERT INTO time_tracker.users" +
+            "(login, first_name, last_name, password, role_id)  VALUES (?, ?, ?, ?, ?)";
+
 
     public Optional<User> findByLogin(String login){
         try (Connection conn = ConnectionMaker.getInstance().getConnection()) {
@@ -40,5 +43,24 @@ public class UserDAO {
         return Optional.empty();
     }
 
+    public boolean addUser(User user) {
+        if(user == null )
+            return false;
+        try (Connection conn = ConnectionMaker.getInstance().getConnection()) {
+            try(PreparedStatement preparedStatement = conn.prepareStatement(SQL_ADD_USER)) {
+                preparedStatement.setString(1, user.getLogin());
+                preparedStatement.setString(2, user.getFirstName());
+                preparedStatement.setString(3, user.getLastName());
+                preparedStatement.setString(4, user.getPassword());
+                preparedStatement.setInt(5, user.getRoleID());
 
+                return preparedStatement.executeUpdate() == 1;
+            }
+        } catch (SQLException se) {
+            log.error("Can't connect to database!", se);
+        } catch (ClassNotFoundException e) {
+            log.error("Can't find database driver!", e);
+        }
+        return false;
+    }
 }
