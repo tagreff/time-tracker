@@ -3,6 +3,7 @@ package com.gcloud.tracker.web;
 import com.gcloud.tracker.dao.UserDAO;
 import com.gcloud.tracker.model.User;
 import lombok.SneakyThrows;
+import org.w3c.dom.ls.LSOutput;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,6 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Optional;
 
 @WebServlet("/")
 public class LoginServlet extends HttpServlet {
@@ -22,8 +24,15 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)  {
 
-        userDAO.findByLogin(req.getParameter("login"))
-                .ifPresentOrElse(user -> onLoginSuccess(user, req, resp), () -> onLoginFail(resp));
+        Optional<User> user = userDAO.findByLogin(req.getParameter("login"));
+        if (user.isPresent()){
+            if (user.get().getPassword().equals(req.getParameter("password"))){
+                onLoginSuccess(user.get(), req, resp);
+            }else {
+                onLoginFail(resp);
+            }
+        }
+
 
     }
     @SneakyThrows

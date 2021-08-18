@@ -10,6 +10,9 @@
     <label>Login:
         <input name="login" type="text" required="required">
     </label>
+    <label>Password:
+        <input name="password" type="text" required="required">
+    </label>
     <button type="submit">Login</button>
 </form>
 
