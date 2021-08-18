@@ -4,17 +4,19 @@ import com.gcloud.tracker.dao.UserDAO;
 import com.gcloud.tracker.model.User;
 import lombok.SneakyThrows;
 
+import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 @WebServlet("/")
 public class LoginServlet extends HttpServlet {
     UserDAO userDAO = new UserDAO();
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
-        req.getRequestDispatcher("/WEb-INF/index.jsp");
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.getRequestDispatcher("/WEB-INF/index.jsp").forward(req, resp);
     }
 
     @Override
@@ -31,7 +33,7 @@ public class LoginServlet extends HttpServlet {
     }
     @SneakyThrows
     private void onLoginFail(HttpServletResponse resp) {
-        resp.sendRedirect("/login");
+        resp.sendRedirect("/");
     }
 }
 

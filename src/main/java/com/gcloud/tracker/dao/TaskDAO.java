@@ -20,6 +20,16 @@ public class TaskDAO {
     }
 
     public List<Task> findTaskByUserIdAndDate(Integer id, LocalDate date){
-        return new ArrayList<>();
+
+        Task task = new Task();
+        task.setId(1);
+        task.setUserId(1);
+        task.setDescription("123");
+        task.setDate(LocalDate.now());
+        task.setHours(2);
+        task.setMinutes(3);
+        List<Task> taskList = new ArrayList<>();
+        taskList.add(task);
+        return taskList;
     }
 }

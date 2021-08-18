@@ -11,7 +11,14 @@ import java.util.Optional;
 public class UserDAO {
 
     public Optional<User> findByLogin(String login){
-        return Optional.ofNullable(new User());
+        User user = new User();
+        user.setLogin("User");
+        user.setFirstName("Mikhail");
+        user.setLastName("Toporov");
+        user.setId(1);
+        user.setPassword("111");
+
+        return Optional.ofNullable(user);
     }
 
 

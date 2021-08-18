@@ -2,10 +2,34 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Title</title>
+    <title>${sessionScope.user.lastName}</title>
 </head>
 <body>
+<table border="1">
+    <caption>Add task</caption>
+    <tr>
+        <th>Field</th>
+        <th>Value</th>
+    </tr>
+    <form action="${pageContext.request.contextPath}/mainPage" method="post">
+    <tr>
+        <td>Hours</td><td><input name="hours" type="text"  required></td>
+    </tr>
+        <tr>
+            <td>minutes</td><td><input name="minutes" type="text"  required></td>
+        </tr>
+        <tr>
+            <td>description</td><td><input name="description" type="text"  required></td>
+        </tr>
+        <tr>
+            <td></td><td><button type="submit" >Send task</button></td>
+        </tr>
+    </form>
 
+</table>
+
+
+    <br>
 
 <table border="1">
     <caption>Отчет за ${requestScope.date} ${sessionScope.user.firstName} ${sessionScope.user.lastName}</caption>
