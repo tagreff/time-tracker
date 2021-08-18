@@ -55,7 +55,7 @@ public class TaskDAO {
         return tasks;
     }
 
-    public Optional getById(Integer id) {
+    public Task getById(Integer id) {
         Task task = null;
         try (
                 Connection conn = ConnectionMaker.getInstance().getConnection();
@@ -76,7 +76,7 @@ public class TaskDAO {
         } catch (ClassNotFoundException e) {
             log.error("Can't find database driver", e);
         }
-        return Optional.ofNullable(task);
+        return task;
     }
 
     public List<Task> findTaskByUserIdAndDate(Integer userId, LocalDate date){
@@ -136,7 +136,7 @@ public class TaskDAO {
         }
     }
 
-    public void deleteById(Integer id) {
+    public void delete(Integer id) {
         try (
                 Connection conn = ConnectionMaker.getInstance().getConnection();
                 PreparedStatement ps = conn.prepareStatement(SQL_DELETE_TASK)
