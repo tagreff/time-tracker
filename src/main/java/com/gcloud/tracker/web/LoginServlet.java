@@ -17,7 +17,7 @@ import java.util.Optional;
 public class LoginServlet extends HttpServlet {
     UserDAO userDAO = new UserDAO();
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.getRequestDispatcher("/WEB-INF/index.jsp").forward(req, resp);
     }
 

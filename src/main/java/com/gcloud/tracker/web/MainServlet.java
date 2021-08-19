@@ -19,7 +19,7 @@ public class MainServlet extends HttpServlet {
 //    UserDAO userDAO = new UserDAO();
     TaskDAO taskDAO = new TaskDAO();
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         List<Task> taskList;
         User user = (User) req.getSession().getAttribute("user");
         taskList = taskDAO.findTaskByUserIdAndDate(user.getId(), LocalDate.now());
