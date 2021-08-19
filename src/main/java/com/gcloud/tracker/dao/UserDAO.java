@@ -2,6 +2,7 @@ package com.gcloud.tracker.dao;
 
 import com.gcloud.tracker.model.User;
 import com.gcloud.tracker.util.ConnectionMaker;
+import lombok.SneakyThrows;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,10 +34,10 @@ public class UserDAO {
      * @param login - unique user login string
      * @return <code>User</code> wrapped into <code>Optional</code> if exists, else Optional.empty().
      */
+    @SneakyThrows
     public Optional<User> findByLogin(String login){
-        try (Connection conn = ConnectionMaker.getInstance().getConnection()) {
-
-            try(PreparedStatement preparedStatement = conn.prepareStatement(SQL_FIND_BY_LOGIN)) {
+        try (Connection conn = ConnectionMaker.getInstance().getConnection();
+            PreparedStatement preparedStatement = conn.prepareStatement(SQL_FIND_BY_LOGIN)) {
                 preparedStatement.setString(1, login);
                 ResultSet resultSet = preparedStatement.executeQuery();
                 if(resultSet.next()){
@@ -49,11 +50,7 @@ public class UserDAO {
                             .setRoleID(resultSet.getInt("role_id")));
                 }
             }
-        } catch (SQLException se) {
-            log.error("Can't connect to database!", se);
-        } catch (ClassNotFoundException e) {
-            log.error("Can't find database driver!", e);
-        }
+
         return Optional.empty();
     }
 
