@@ -29,8 +29,10 @@ public class LoginServlet extends HttpServlet {
             if (user.get().getPassword().equals(req.getParameter("password"))){
                 onLoginSuccess(user.get(), req, resp);
             }else {
-                onLoginFail(resp);
+                onLoginFail(resp, req);
             }
+            onLoginFail(resp, req);
+
         }
 
 
@@ -41,8 +43,9 @@ public class LoginServlet extends HttpServlet {
         response.sendRedirect("/mainPage");
     }
     @SneakyThrows
-    private void onLoginFail(HttpServletResponse resp) {
-        resp.sendRedirect("/");
+    private void onLoginFail(HttpServletResponse resp, HttpServletRequest req) {
+
+        resp.sendRedirect("/?error&" + req.getParameter("email"));
     }
 }
 
