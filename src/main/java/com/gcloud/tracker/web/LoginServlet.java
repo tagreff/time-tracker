@@ -31,6 +31,8 @@ public class LoginServlet extends HttpServlet {
             }else {
                 onLoginFail(resp, req);
             }
+            onLoginFail(resp, req);
+
         }
 
 
