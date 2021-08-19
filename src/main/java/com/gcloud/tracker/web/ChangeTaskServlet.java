@@ -15,12 +15,14 @@ public class ChangeTaskServlet extends HttpServlet {
     TaskDAO taskDAO = new TaskDAO();
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Task task = taskDAO.getById(Integer.parseInt(req.getParameter("id")));
+        /* TODO: check Optional */
+        Task task = taskDAO.getById(Integer.parseInt(req.getParameter("id"))).get();
         task.setDescription(req.getParameter("description"));
         task.setHours(Integer.parseInt(req.getParameter("hours")));
         task.setMinutes(Integer.parseInt(req.getParameter("minutes")));
 
-        taskDAO.change(task);
+        /* TODO: implement method */
+        //taskDAO.change(task);
         resp.sendRedirect("/mainPage");
     }
 }

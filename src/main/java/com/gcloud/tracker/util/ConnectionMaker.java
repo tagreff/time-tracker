@@ -1,5 +1,6 @@
 package com.gcloud.tracker.util;
 
+import com.gcloud.tracker.util.props.ResourcesPropertiesMaker;
 import com.gcloud.tracker.util.props.TomcatConfPropertiesMaker;
 
 import java.sql.Connection;
@@ -18,7 +19,7 @@ public class ConnectionMaker {
     private static ConnectionMaker instance;
     private final Connection con;
     /* Please, chose ResourcesPropertiesMaker for local debug or TomcatConfPropertiesMaker for prod. */
-    private static final Properties props = TomcatConfPropertiesMaker.getProps("db.properties");
+    private static final Properties props = ResourcesPropertiesMaker.getProps("db.properties");
 
     private ConnectionMaker() throws SQLException, ClassNotFoundException {
         Class.forName(props.getProperty("connection.driver"));
