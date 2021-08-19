@@ -1,4 +1,4 @@
-package com.gcloud.tracker.util;
+package com.gcloud.tracker.util.props;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,20 +9,21 @@ import java.io.InputStream;
 import java.util.Properties;
 
 /**
- * Class PropertiesMaker
+ * Class ResourcesPropertiesMaker
  *
- * Provides Properties object from property file.
+ * Provides Properties object from property file
+ * located in java resources directory.
  *
  * @author Oleksandr Storozhuk
- * @version 0.0.1
+ * @version 0.0.2
  * created on 16.08.2021
  */
-public class PropertiesMaker {
-    private static PropertiesMaker instance;
+public class ResourcesPropertiesMaker {
+    private static ResourcesPropertiesMaker instance;
     private final Properties props;
-    private final static Logger log = LoggerFactory.getLogger(PropertiesMaker.class);
+    private final static Logger log = LoggerFactory.getLogger(ResourcesPropertiesMaker.class);
 
-    private PropertiesMaker(String resourceFile) {
+    private ResourcesPropertiesMaker(String resourceFile) {
         props = new Properties();
         ClassLoader loader = Thread.currentThread().getContextClassLoader();
         try (InputStream resourceStream = loader.getResourceAsStream(resourceFile)) {
@@ -35,16 +36,16 @@ public class PropertiesMaker {
     }
 
     /**
-     * @param resourceFile filename from java resources folder
+     * @param resourceFile filename from java resources folder.
      * @return java.util.Properties
      */
     public static Properties getProps(String resourceFile) {
         return getInstance(resourceFile).props;
     }
 
-    private static PropertiesMaker getInstance(String source) {
+    private static ResourcesPropertiesMaker getInstance(String source) {
         if (instance == null)
-            instance = new PropertiesMaker(source);
+            instance = new ResourcesPropertiesMaker(source);
         return instance;
     }
 }
