@@ -1,7 +1,5 @@
 package com.gcloud.tracker.model;
-
 import lombok.Data;
-
 import java.time.LocalDate;
 
 @Data
