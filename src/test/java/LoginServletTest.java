@@ -18,8 +18,6 @@ public class LoginServletTest {
 
     private final static String path = "/WEB-INF/index.jsp";
 
-    /* TODO: ignored tests */
-    @Ignore
     @Test
     public void whenCallDoGetThenServletReturnIndexPage() throws ServletException, IOException {
 
@@ -31,8 +29,7 @@ public class LoginServletTest {
 
         when(request.getRequestDispatcher(path)).thenReturn(dispatcher);
 
-        /* TODO: fix access modifiers */
-        //servlet.doGet(request, response);
+        servlet.doGet(request, response);
 
         verify(request, times(1)).getRequestDispatcher(path);   // analogue assert in JUnit
         verify(dispatcher).forward(request, response);
