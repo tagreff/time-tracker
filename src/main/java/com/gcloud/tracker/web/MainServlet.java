@@ -30,6 +30,21 @@ public class MainServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        if(req.getParameter("hours").matches("\\d{2}")){
 
+            resp.sendRedirect("/mainPage?error");
+        }
+        if(req.getParameter("minutes").matches("\\d{2}")){
+
+            resp.sendRedirect("/mainPage?error");
+        }
+
+        Task task = new Task();
+        task.setDescription(req.getParameter("description"));
+        task.setHours(Integer.parseInt(req.getParameter("hours")));
+        task.setMinutes(Integer.parseInt(req.getParameter("minutes")));
+        task.setDate(LocalDate.now());
+        task.setUserId(Integer.parseInt(req.getParameter("id")));
+        taskDAO.create(task);
     }
 }

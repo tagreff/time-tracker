@@ -24,6 +24,12 @@
         <tr>
             <td></td><td><button type="submit" >Send task</button></td>
         </tr>
+        <input name="id" type="hidden" value="${sessionScope.user.id}">
+        <c:if test="${param.error != null}">
+            <div style="color: red">
+                <span>Hours or minutes is not correct</span>
+            </div>
+        </c:if>
     </form>
 
 </table>

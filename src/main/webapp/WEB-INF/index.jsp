@@ -14,7 +14,13 @@
         <input name="password" type="text" required="required">
     </label>
     <button type="submit">Login</button>
+    <c:if test="${param.error != null}">
+        <div style="color: red">
+            <span>Login or password is not correct</span>
+        </div>
+    </c:if>
 </form>
+
 
 </body>
 </html>
