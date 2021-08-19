@@ -18,10 +18,13 @@ import java.util.Properties;
 public class ConnectionMaker {
     private static ConnectionMaker instance;
     private final Connection con;
-    /* Please, chose ResourcesPropertiesMaker for local debug or TomcatConfPropertiesMaker for prod. */
-    private static final Properties props = ResourcesPropertiesMaker.getProps("db.properties");
+    private static Properties props = ResourcesPropertiesMaker.getProps("db.properties");
 
     private ConnectionMaker() throws SQLException, ClassNotFoundException {
+        // Select db.properties source
+        if(!Boolean.parseBoolean(props.getProperty("properties.source.resources"))) {
+            props = TomcatConfPropertiesMaker.getProps("db.properties");
+        }
         Class.forName(props.getProperty("connection.driver"));
         this.con = DriverManager.getConnection(
                 props.getProperty("connection.url"),
