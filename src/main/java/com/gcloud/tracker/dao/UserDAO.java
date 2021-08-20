@@ -6,10 +6,9 @@ import lombok.SneakyThrows;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -18,13 +17,14 @@ import java.util.Optional;
  * Data Access Object.
  *
  * @author Oleksandr Storozhuk
- * @version 0.0.2
+ * @version 0.0.3
  * created on 18.08.2021
  */
 public class UserDAO {
     private static final Logger log = LoggerFactory.getLogger(UserDAO.class);
 
     private final String SQL_FIND_BY_LOGIN = "SELECT * FROM time_tracker.users WHERE login=?";
+    private final String SQL_FIND_ALL_USER = "SELECT * FROM time_tracker.users";
     private final String SQL_ADD_USER = "INSERT INTO time_tracker.users" +
             "(login, first_name, last_name, password, role_id)  VALUES (?, ?, ?, ?, ?)";
 
@@ -52,6 +52,36 @@ public class UserDAO {
             }
 
         return Optional.empty();
+    }
+
+    /**
+     * Find all users
+     * @return <code>List<User></code>
+     */
+    public List<User> getAll() {
+        List<User> users = new ArrayList<>();
+        try (
+                Connection conn = ConnectionMaker.getInstance().getConnection();
+                Statement statement = conn.createStatement();
+                ResultSet resultSet = statement.executeQuery(SQL_FIND_ALL_USER)
+        ) {
+            while (resultSet.next()) {
+                User user = new User()
+                        .setId(resultSet.getInt("id"))
+                        .setFirstName(resultSet.getString("first_name"))
+                        .setLastName(resultSet.getString("last_name"))
+                        .setLogin(resultSet.getString("login"))
+                        .setPassword(resultSet.getString("password"))
+                        .setRoleID(resultSet.getInt("role_id"));
+
+                users.add(user);
+            }
+        } catch (SQLException se) {
+            log.error("Can't connect to database", se);
+        } catch (ClassNotFoundException e) {
+            log.error("Can't find database driver", e);
+        }
+        return users;
     }
 
     /**

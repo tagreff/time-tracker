@@ -8,9 +8,9 @@ import java.util.List;
 
 public class TaskService {
 
-    TaskDAO taskDAO = new TaskDAO();
+    TaskDAO taskDAO = TaskDAO.getInstance();
+
     public List<Task> getDailyUserTask(Integer id, LocalDate today) {
-        //return taskDAO.findTaskByUserIdAndDate(id, today);
-        throw new RuntimeException("method not implemented yet");
+        return taskDAO.findTaskByUserIdAndDate(id, today);
     }
 }
