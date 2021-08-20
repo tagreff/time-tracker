@@ -55,10 +55,12 @@
                 <td><button type="submit">Change task</button></td>
 
             </form>
-            <td><form action="${pageContext.request.contextPath}/deleteTask" method="post">
+            <form action="${pageContext.request.contextPath}/deleteTask" method="post">
                 <input type="hidden" name="taskId" value="${task.id}">
-                <button type="submit">Delete task</button>
-            </form></td>
+                <td>
+                    <button type="submit">Delete task</button>
+                </td>
+            </form>
 
         </tr>
     </c:forEach>

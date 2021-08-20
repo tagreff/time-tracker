@@ -34,8 +34,5 @@ out/
 *.ipr
 *.iws
 
-# Properties file
-src/main/resources/db.properties
-
 # Log reports
 catalina.*
