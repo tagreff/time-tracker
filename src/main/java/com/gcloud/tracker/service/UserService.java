@@ -7,13 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserService {
+    private final UserDAO userDAO = new UserDAO();
     public List<User> findAllUsers(){
-        //здесь я хочу получить всех юзеров из UserDAO
-        UserDAO userDAO = new UserDAO();
-        //return userDAO.findAll()
-        //      /\
-        //      |
-        //      |
-        return  List.of(new User()); //TODO: имплементируйте метод findALl() в UserDAO!
+        return userDAO.findAll();
     }
 }
