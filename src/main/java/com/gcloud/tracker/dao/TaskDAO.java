@@ -142,6 +142,7 @@ public class TaskDAO {
                 PreparedStatement ps = conn.prepareStatement(SQL_DELETE_TASK)
         ) {
             ps.setInt(1, id);
+            ps.execute();
             conn.commit();
         } catch (SQLException se) {
             log.error("Can't connect to database", se);
