@@ -1,5 +1,6 @@
 import com.gcloud.tracker.web.LoginServlet;
 import com.gcloud.tracker.web.MainServlet;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import javax.servlet.RequestDispatcher;
@@ -14,6 +15,7 @@ public class MainServletTest {
 
     private final static String path = "/WEB-INF/mainPage.jsp";
 
+    @Ignore
     @Test
     public void whenCallDoGetMainServletReturnIndexPageWithTaskList() throws ServletException, IOException {
 
