@@ -10,7 +10,7 @@ public class TaskService {
 
     TaskDAO taskDAO = new TaskDAO();
     public List<Task> getDailyUserTask(Integer id, LocalDate today) {
-        //return taskDAO.findTaskByUserIdAndDate(id, today);
-        throw new RuntimeException("method not implemented yet");
+        return taskDAO.findTaskByUserIdAndDate(id, today);
+//        throw new RuntimeException("method not implemented yet");
     }
 }
