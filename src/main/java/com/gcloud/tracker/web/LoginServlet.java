@@ -18,7 +18,7 @@ import java.util.Optional;
 public class LoginServlet extends HttpServlet {
     UserDAO userDAO = new UserDAO();
     @Override
-    public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
         req.getRequestDispatcher("/WEB-INF/index.jsp").forward(req, resp);
     }

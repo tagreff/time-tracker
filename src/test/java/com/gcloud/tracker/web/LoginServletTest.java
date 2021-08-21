@@ -1,5 +1,7 @@
+package com.gcloud.tracker.web;
+
 import com.gcloud.tracker.web.LoginServlet;
-import com.gcloud.tracker.web.MainServlet;
+import com.gcloud.tracker.web.LoginServlet;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -11,15 +13,17 @@ import java.io.IOException;
 
 import static org.mockito.Mockito.*;
 
-public class MainServletTest {
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
-    private final static String path = "/WEB-INF/mainPage.jsp";
+public class LoginServletTest {
 
-    @Ignore
+    private final static String path = "/WEB-INF/index.jsp";
+
     @Test
-    public void whenCallDoGetMainServletReturnIndexPageWithTaskList() throws ServletException, IOException {
+    public void whenCallDoGetThenServletReturnIndexPage() throws ServletException, IOException {
 
-        final MainServlet servlet = new MainServlet();
+        final LoginServlet servlet = new LoginServlet();
 
         final HttpServletRequest request = mock(HttpServletRequest.class);
         final HttpServletResponse response = mock(HttpServletResponse.class);
@@ -32,4 +36,7 @@ public class MainServletTest {
         verify(request, times(1)).getRequestDispatcher(path);   // analogue assert in JUnit
         verify(dispatcher).forward(request, response);
     }
+
+
+
 }

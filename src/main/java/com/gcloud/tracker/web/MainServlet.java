@@ -19,7 +19,7 @@ public class MainServlet extends HttpServlet {
 //    UserDAO userDAO = new UserDAO();
     TaskDAO taskDAO = new TaskDAO();
     @Override
-    public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
         List<Task> taskList;
         User user = (User) req.getSession().getAttribute("user");
