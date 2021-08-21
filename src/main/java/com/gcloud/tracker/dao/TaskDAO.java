@@ -59,7 +59,7 @@ public class TaskDAO {
         Task task = null;
         try (
                 Connection conn = ConnectionMaker.getInstance().getConnection();
-                PreparedStatement ps = conn.prepareStatement(SQL_FIND_TASK_BY_ID);
+                PreparedStatement ps = conn.prepareStatement(SQL_FIND_TASK_BY_ID)
         ) {
             ps.setInt(1, id);
             ResultSet resultSet = ps.executeQuery();
@@ -83,7 +83,7 @@ public class TaskDAO {
         List<Task> tasks = new ArrayList<>();
         try (
                 Connection conn = ConnectionMaker.getInstance().getConnection();
-                PreparedStatement ps = conn.prepareStatement(SQL_FIND_TASK_BY_USER_ID_AND_DATE);
+                PreparedStatement ps = conn.prepareStatement(SQL_FIND_TASK_BY_USER_ID_AND_DATE)
         ) {
             ps.setInt(1, userId);
             ps.setDate(2, Date.valueOf(date));
@@ -108,7 +108,6 @@ public class TaskDAO {
             ps.setInt(4, task.getHours());
             ps.setInt(5, task.getMinutes());
             ps.executeUpdate();
-            conn.commit();
         } catch (SQLException se) {
             log.error("Can't connect to database", se);
         } catch (ClassNotFoundException e) {
@@ -128,7 +127,6 @@ public class TaskDAO {
             ps.setInt(5, task.getMinutes());
             ps.setInt(6, task.getId());
             ps.executeUpdate();
-            conn.commit();
         } catch (SQLException se) {
             log.error("Can't connect to database", se);
         } catch (ClassNotFoundException e) {
@@ -143,7 +141,6 @@ public class TaskDAO {
         ) {
             ps.setInt(1, id);
             ps.execute();
-            conn.commit();
         } catch (SQLException se) {
             log.error("Can't connect to database", se);
         } catch (ClassNotFoundException e) {
