@@ -50,7 +50,6 @@ public class UserDAO {
                             .setRoleID(resultSet.getInt("role_id")));
                 }
             }
-
         return Optional.empty();
     }
 

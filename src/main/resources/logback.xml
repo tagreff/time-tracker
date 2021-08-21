@@ -19,12 +19,12 @@
     </appender>
 
     <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
-        <layout class="ch.qos.logback.classic.PatternLayout">
-            <pattern>%d{HH:mm:ss.SSS} [%-5level] %msg%n</pattern>
-        </layout>
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %level %msg%n</pattern>
+        </encoder>
     </appender>
 
-    <root level="warn">
+    <root level="info">
         <appender-ref ref="app" />
 <!--        <appender-ref ref="console" />-->
     </root>

@@ -18,14 +18,14 @@ public class ReportAssembler {
     UserService userService = new UserService();
     TaskService taskService = new TaskService();
 
-    public void assemblePdf()  {
+    public void assemblePdf(String pdfPath)  {
         try {
             //Prepare document for assembling
             Document document = new Document();
             //file will be saved to ./src/report.pdf TODO: change file location
-            PdfWriter.getInstance(document, new FileOutputStream("report.pdf"));
+            PdfWriter.getInstance(document, new FileOutputStream(pdfPath));
             document.open();
-            BaseFont bf = BaseFont.createFont("./src/main/resources/fonts/consola.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+            BaseFont bf = BaseFont.createFont("./fonts/consola.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
             Font font = new Font(bf,14, Font.NORMAL);
             Chunk chunk = new Chunk();
 
@@ -40,6 +40,7 @@ public class ReportAssembler {
             for (User user : users){
                 tasks = new ArrayList<>(taskService.getDailyUserTask(user.getId(), LocalDate.now()));
                 prepareUserBlock(user, document, font, count);
+                document.add(new Paragraph());
                 for (Task task : tasks){
                     prepareTaskBlock(task, document, font);
                 }
