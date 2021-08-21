@@ -3,6 +3,7 @@ package com.gcloud.tracker.web;
 import com.gcloud.tracker.dao.UserDAO;
 import com.gcloud.tracker.model.User;
 import com.gcloud.tracker.service.SenderService;
+import com.gcloud.tracker.util.SchedulerUtils;
 import lombok.SneakyThrows;
 import org.w3c.dom.ls.LSOutput;
 
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Optional;
@@ -23,11 +25,12 @@ import java.util.concurrent.TimeUnit;
 @WebServlet("/")
 public class LoginServlet extends HttpServlet {
     UserDAO userDAO = new UserDAO();
-    /* TODO: Enable scheduler */
-//    static {
-//        final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-//        scheduler.scheduleAtFixedRate(new SenderService(), 0, 1, TimeUnit.MINUTES);
-//    }
+    static {
+        final int MINUTES_IN_DAY = 1440;
+        final int MINUTES_SEND_TIME = 1065;
+        final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+        scheduler.scheduleAtFixedRate(new SenderService(), SchedulerUtils.initialDelayMinutes(MINUTES_SEND_TIME), MINUTES_IN_DAY, TimeUnit.MINUTES);
+    }
 
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
