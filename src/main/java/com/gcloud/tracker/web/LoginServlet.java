@@ -5,7 +5,7 @@ import com.gcloud.tracker.model.User;
 import com.gcloud.tracker.service.SenderService;
 import com.gcloud.tracker.util.SchedulerUtils;
 import lombok.SneakyThrows;
-import org.w3c.dom.ls.LSOutput;
+import org.apache.commons.codec.digest.DigestUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,9 +14,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.util.Optional;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -43,7 +40,7 @@ public class LoginServlet extends HttpServlet {
         req.setCharacterEncoding("UTF-8");
         Optional<User> user = userDAO.findByLogin(req.getParameter("login"));
         if (user.isPresent()){
-            if (user.get().getPassword().equals(req.getParameter("password"))){
+            if (user.get().getPassword().equals(DigestUtils.sha1Hex(req.getParameter("password")))){
                 onLoginSuccess(user.get(), req, resp);
             }else {
                 onLoginFail(resp, req);

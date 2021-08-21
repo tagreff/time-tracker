@@ -10,6 +10,11 @@ import java.time.ZonedDateTime;
  * created on 21/08/21
  */
 public class SchedulerUtils {
+    /**
+     * Calculates the time to the required time label in minutes.
+     * @param minutesTimeStump time label in minutes
+     * @return time in minutes left for the needed time label.
+     */
     public static int initialDelayMinutes(int minutesTimeStump) {
         ZonedDateTime time = LocalDateTime.now().atZone(ZoneId.of("Europe/Moscow"));
         int currTimeMin = time.getHour() * 60 + time.getMinute();
