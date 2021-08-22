@@ -7,6 +7,8 @@ import com.gcloud.tracker.service.UserService;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfWriter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -15,6 +17,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class ReportAssembler {
+    private static final Logger log = LoggerFactory.getLogger(ReportAssembler.class);
     UserService userService = new UserService();
     TaskService taskService = new TaskService();
 
@@ -47,14 +50,12 @@ public class ReportAssembler {
                 count++;
             }
             document.close();//don't forget to close resources!!
-        } catch (FileNotFoundException e){
-            e.printStackTrace();
-            System.err.println("File Not Found");
-        } catch (DocumentException e){
-            e.printStackTrace();
-            System.err.println("itextpdf library exception");
+        } catch (FileNotFoundException fe){
+            log.error("File Not Found!", fe);
+        } catch (DocumentException de){
+            log.error("itextpdf library exception!", de);
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("IO Exception occured!", e);
         }
     }
 

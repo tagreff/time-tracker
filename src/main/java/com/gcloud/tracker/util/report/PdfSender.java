@@ -4,22 +4,22 @@ import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 
-import com.gcloud.tracker.service.SenderService;
 import com.gcloud.tracker.util.email.EmailUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class PdfSender {
-    private static final Logger log = LoggerFactory.getLogger(SenderService.class);
+    private static final Logger log = LoggerFactory.getLogger(PdfSender.class);
     public static boolean sendPdf(){
         try {
             String fileName;
             fileName = getPath();
             createPdf(fileName);
             EmailUtil.sendMail(fileName);
+            log.info(String.format("Report %s sent!", fileName));
             return true;
         } catch (IOException e){
-           log.error("Error occured when trying to send file", e);
+            log.error("Report doesn't sent!", e);
             return false;
         }
     }
