@@ -16,7 +16,7 @@ import java.util.List;
 
 @WebServlet("/mainPage")
 public class MainServlet extends HttpServlet {
-    TaskDAO taskDAO = new TaskDAO();
+    private static final TaskDAO taskDAO = new TaskDAO();
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");

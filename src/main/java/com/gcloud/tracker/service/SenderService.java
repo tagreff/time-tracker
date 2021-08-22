@@ -15,7 +15,8 @@ public class SenderService implements Runnable {
 
     @Override
     public void run() {
-        if(PdfSender.sendPdf())
+        Boolean isSent = PdfSender.sendPdf();
+        if(isSent)
             log.info("Report sent successfully.");
         else log.warn("Report wasn't send");
     }
