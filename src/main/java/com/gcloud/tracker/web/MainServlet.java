@@ -22,10 +22,14 @@ public class MainServlet extends HttpServlet {
         req.setCharacterEncoding("UTF-8");
         List<Task> taskList;
         User user = (User) req.getSession().getAttribute("user");
-        taskList = taskDAO.findTaskByUserIdAndDate(user.getId(), LocalDate.now());
-        req.setAttribute("tasks", taskList);
-        req.setAttribute("date", LocalDate.now());
-        req.getRequestDispatcher("/WEB-INF/mainPage.jsp").forward(req, resp);
+        if(user == null){ //redirect unauthorized user to login page
+            resp.sendRedirect("/");
+        } else {
+            taskList = taskDAO.findTaskByUserIdAndDate(user.getId(), LocalDate.now());
+            req.setAttribute("tasks", taskList);
+            req.setAttribute("date", LocalDate.now());
+            req.getRequestDispatcher("/WEB-INF/mainPage.jsp").forward(req, resp);
+        }
     }
 
     @Override
