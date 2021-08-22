@@ -1,5 +1,6 @@
 package com.gcloud.tracker.web;
 
+import com.gcloud.tracker.model.User;
 import com.gcloud.tracker.web.LoginServlet;
 import com.gcloud.tracker.web.MainServlet;
 import org.junit.Ignore;
@@ -10,6 +11,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.HashSet;
 
 import static org.mockito.Mockito.*;
 
@@ -22,12 +25,14 @@ public class MainServletTest {
     public void whenCallDoGetMainServletReturnIndexPageWithTaskList() throws ServletException, IOException {
 
         final MainServlet servlet = new MainServlet();
+        User user = new User();
 
         final HttpServletRequest request = mock(HttpServletRequest.class);
         final HttpServletResponse response = mock(HttpServletResponse.class);
         final RequestDispatcher dispatcher = mock(RequestDispatcher.class);
 
         when(request.getRequestDispatcher(path)).thenReturn(dispatcher);
+        when(request.getAttribute("user")).thenReturn(user);
 
         servlet.doGet(request, response);
 

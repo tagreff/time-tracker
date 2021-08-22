@@ -22,6 +22,7 @@ public class MainServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
         List<Task> taskList;
+        //User user = (User) req.getAttribute("user");
         User user = (User) req.getSession().getAttribute("user");
         taskList = taskDAO.findTaskByUserIdAndDate(user.getId(), LocalDate.now());
         req.setAttribute("tasks", taskList);
