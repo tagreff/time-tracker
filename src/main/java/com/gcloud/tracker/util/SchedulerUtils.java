@@ -3,6 +3,7 @@ package com.gcloud.tracker.util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -20,8 +21,11 @@ public class SchedulerUtils {
      * @return time in minutes left for the needed time label.
      */
     public static int initialDelayMinutes(int minutesTimeStump) {
-        ZonedDateTime time = LocalDateTime.now().atZone(ZoneId.of("Europe/Moscow"));
-        int currTimeMin = time.getHour() * 60 + time.getMinute();
+        Instant nowUtc = Instant.now();
+        ZoneId euMSK = ZoneId.of("Europe/Moscow");
+        ZonedDateTime nowEuMSK = ZonedDateTime.ofInstant(nowUtc, euMSK);
+        //ZonedDateTime time = LocalDateTime.now().atZone(ZoneId.of("Europe/Moscow"));
+        int currTimeMin = nowEuMSK.getHour() * 60 + nowEuMSK.getMinute();
         log.info("Current timezone time=" + currTimeMin);
         if(currTimeMin < minutesTimeStump) {
             return minutesTimeStump - currTimeMin;
