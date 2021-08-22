@@ -24,6 +24,11 @@
             <span>User ${param.userCreated} successfully created!</span>
         </div>
     </c:if>
+    <c:if test="${param.report != null}">
+        <div style="color: darkgreen">
+            <span>Report sent</span>
+        </div>
+    </c:if>
 </form>
 
 
