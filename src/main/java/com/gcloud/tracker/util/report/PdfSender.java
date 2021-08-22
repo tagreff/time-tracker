@@ -25,9 +25,15 @@ public class PdfSender {
     }
 
     public static String getPath() throws IOException {
-        String pathName = System.getProperty("user.dir")
+        String baseDirectory;
+        if(System.getProperty("catalina.base") != null) {
+            baseDirectory = System.getProperty("catalina.base");
+        } else {
+            baseDirectory = System.getProperty("user.dir");
+        }
+        String pathName = baseDirectory
                 .concat(File.separator)
-                .concat("reports")
+                .concat("PDF-reports")
                 .concat(File.separator);
         File file = new File(pathName);
         if(!file.exists()) {
