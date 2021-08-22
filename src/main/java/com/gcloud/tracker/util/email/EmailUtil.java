@@ -1,8 +1,6 @@
 package com.gcloud.tracker.util.email;
 
 import com.gcloud.tracker.util.PropertiesMaker;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;

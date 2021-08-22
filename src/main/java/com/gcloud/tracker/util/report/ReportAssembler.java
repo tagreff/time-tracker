@@ -27,7 +27,6 @@ public class ReportAssembler {
             document.open();
             BaseFont bf = BaseFont.createFont("./fonts/consola.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
             Font font = new Font(bf,14, Font.NORMAL);
-            Chunk chunk = new Chunk();
 
             //preparing data required for document
             ArrayList<User> users = new ArrayList<>(userService.findAllUsers());
@@ -60,7 +59,7 @@ public class ReportAssembler {
     }
 
     protected void prepareTitle(Document document, Font font) throws DocumentException {
-        Chunk chunk = new Chunk("Отчет за  " + LocalDate.now().toString(), font);
+        Chunk chunk = new Chunk("Отчет за  " + LocalDate.now(), font);
         document.add(chunk);
         document.add(new Paragraph("\n"));
     }

@@ -26,9 +26,9 @@ import java.util.Optional;
 public class UserDAO {
     private static final Logger log = LoggerFactory.getLogger(UserDAO.class);
 
-    private final String SQL_FIND_BY_LOGIN = "SELECT * FROM time_tracker.users WHERE login=?";
-    private final String SQL_FIND_ALL = "SELECT * FROM time_tracker.users";
-    private final String SQL_ADD_USER = "INSERT INTO time_tracker.users" +
+    private static final String SQL_FIND_BY_LOGIN = "SELECT * FROM time_tracker.users WHERE login=?";
+    private static final String SQL_FIND_ALL = "SELECT * FROM time_tracker.users";
+    private static final String SQL_ADD_USER = "INSERT INTO time_tracker.users" +
             "(login, first_name, last_name, password, role_id)  VALUES (?, ?, ?, ?, ?)";
 
 

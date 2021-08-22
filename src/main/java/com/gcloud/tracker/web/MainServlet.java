@@ -16,7 +16,6 @@ import java.util.List;
 
 @WebServlet("/mainPage")
 public class MainServlet extends HttpServlet {
-//    UserDAO userDAO = new UserDAO();
     TaskDAO taskDAO = new TaskDAO();
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -30,7 +29,7 @@ public class MainServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         req.setCharacterEncoding("UTF-8");
         Task task = new Task();
         task.setDescription(req.getParameter("description"));

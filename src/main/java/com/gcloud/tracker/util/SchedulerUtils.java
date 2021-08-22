@@ -4,7 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
@@ -24,9 +23,8 @@ public class SchedulerUtils {
         Instant nowUtc = Instant.now();
         ZoneId euMSK = ZoneId.of("Europe/Moscow");
         ZonedDateTime nowEuMSK = ZonedDateTime.ofInstant(nowUtc, euMSK);
-        //ZonedDateTime time = LocalDateTime.now().atZone(ZoneId.of("Europe/Moscow"));
+
         int currTimeMin = nowEuMSK.getHour() * 60 + nowEuMSK.getMinute();
-        log.info("Current timezone time=" + currTimeMin);
         if(currTimeMin < minutesTimeStump) {
             return minutesTimeStump - currTimeMin;
         } else {
