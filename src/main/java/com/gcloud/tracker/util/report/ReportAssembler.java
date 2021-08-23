@@ -22,9 +22,10 @@ public class ReportAssembler {
     TaskService taskService = new TaskService();
 
     public void assemblePdf(String pdfPath)  {
+        Document document = null;
         try {
             //Prepare document for assembling
-            Document document = new Document();
+            document = new Document();
             //file will be saved to ./src/report.pdf TODO: change file location
             PdfWriter.getInstance(document, new FileOutputStream(pdfPath));
             document.open();
@@ -49,13 +50,16 @@ public class ReportAssembler {
                 document.add(new Paragraph("\n"));
                 count++;
             }
-            document.close();//don't forget to close resources!!
         } catch (FileNotFoundException fe){
             log.error("File Not Found!", fe);
         } catch (DocumentException de){
             log.error("itextpdf library exception!", de);
         } catch (IOException e) {
             log.error("IO Exception occured!", e);
+        } finally {
+            if(document != null) {
+                document.close();
+            }
         }
     }
 
