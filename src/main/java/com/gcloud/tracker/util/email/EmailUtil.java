@@ -1,6 +1,8 @@
 package com.gcloud.tracker.util.email;
 
 import com.gcloud.tracker.util.PropertiesMaker;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
@@ -14,8 +16,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.Properties;
 
 public class EmailUtil {
+    private static final Logger log = LoggerFactory.getLogger(EmailUtil.class);
 
-    /*  private static final Logger emailLogger = LoggerFactory.getLogger("emailLogger");*/
     private static final Properties properties = PropertiesMaker.getProps("email.properties");
     private static final String to = properties.getProperty("email.to");
     private static final String from = properties.getProperty("email.from");
@@ -24,6 +26,7 @@ public class EmailUtil {
     private static final String authenticationUserPass = properties.getProperty("pass.user_pass");
 
     public static void sendMail(String reportFilePath) {
+        long fileSize = 0;
 
         Properties systemProperties = System.getProperties();
         systemProperties.put("mail.smtp.host", host);
@@ -34,7 +37,6 @@ public class EmailUtil {
         Session session = Session.getInstance(systemProperties, new javax.mail.Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication() {
                 return new PasswordAuthentication(authenticationUserEmail, authenticationUserPass);
-
             }
         });
         session.setDebug(true);
@@ -51,20 +53,19 @@ public class EmailUtil {
 
             try {
                 File f = new File(reportFilePath);
+                fileSize = f.getUsableSpace();
                 attachmentPart.attachFile(f);
                 textPart.setText("Hello, I'm report sender, here is daily report. Have a nice day!");
                 multipart.addBodyPart(textPart);
                 multipart.addBodyPart(attachmentPart);
             } catch (IOException e) {
-                /*emailLogger.error("Catch exception while working with file: ", e);*/
-                e.printStackTrace();
+                log.error("Catch exception while working with file in EmailUtil: ", e);
             }
             message.setContent(multipart);
             Transport.send(message);
-            /* emailLogger.info("Sent message successfully....");*/
+            log.info("EmailUtil sent message successfully. File size=" + fileSize);
         } catch (MessagingException mex) {
-            /*emailLogger.error("Caught exception while sending message: ", mex);*/
-            mex.printStackTrace();
+            log.error("Caught exception while sending message in EmailUtil: ", mex);
         }
     }
 }

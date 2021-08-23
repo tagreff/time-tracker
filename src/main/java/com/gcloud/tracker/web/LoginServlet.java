@@ -23,10 +23,10 @@ import java.util.concurrent.TimeUnit;
 public class LoginServlet extends HttpServlet {
     UserDAO userDAO = new UserDAO();
     static {
-        final int MINUTES_IN_DAY = 1440;
-        final int MINUTES_SEND_TIME = 1310;
+        final int MINUTES_IN_DAY = 1440; // 24:00
+        final int MINUTES_SEND_TIME = 1060; // 17:40
         final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-        scheduler.scheduleAtFixedRate(new SenderService(), SchedulerUtils.initialDelayMinutes(MINUTES_SEND_TIME), 1, TimeUnit.MINUTES);
+        scheduler.scheduleAtFixedRate(new SenderService(), SchedulerUtils.initialDelayMinutes(MINUTES_SEND_TIME), MINUTES_IN_DAY, TimeUnit.MINUTES);
     }
 
     @Override

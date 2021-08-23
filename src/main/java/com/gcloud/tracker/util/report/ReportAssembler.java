@@ -26,7 +26,6 @@ public class ReportAssembler {
         try {
             //Prepare document for assembling
             document = new Document();
-            //file will be saved to ./src/report.pdf TODO: change file location
             PdfWriter.getInstance(document, new FileOutputStream(pdfPath));
             document.open();
             BaseFont bf = BaseFont.createFont("./fonts/consola.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
