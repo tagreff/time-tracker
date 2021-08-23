@@ -19,10 +19,12 @@ import java.util.Properties;
  */
 public class PropertiesMaker {
     private static PropertiesMaker instance;
+    private static String source;
     private final Properties props;
     private final static Logger log = LoggerFactory.getLogger(PropertiesMaker.class);
 
     private PropertiesMaker(String resourceFile) {
+        source = resourceFile;
         props = new Properties();
         try (InputStream inputStream = getResourcesStream(resourceFile)) {
             props.load(inputStream);
@@ -34,15 +36,17 @@ public class PropertiesMaker {
     }
 
     private InputStream getResourcesStream(String resourceFile) throws IOException {
-        String path = System.getProperty("catalina.base")
-                .concat(File.separator)
-                .concat("conf")
-                .concat(File.separator)
-                .concat(resourceFile);
-        File file = new File(path);
+        if(System.getProperty("catalina.base") != null) {
+            String path = System.getProperty("catalina.base")
+                    .concat(File.separator)
+                    .concat("conf")
+                    .concat(File.separator)
+                    .concat(resourceFile);
+            File file = new File(path);
 
-        if (file.exists() & file.isFile() & file.canRead()) {
-            return new FileInputStream(path);
+            if (file.exists() & file.isFile() & file.canRead()) {
+                return new FileInputStream(path);
+            }
         }
         ClassLoader loader = Thread.currentThread().getContextClassLoader();
         return loader.getResourceAsStream(resourceFile);
@@ -56,9 +60,12 @@ public class PropertiesMaker {
         return getInstance(resourceFile).props;
     }
 
-    private static PropertiesMaker getInstance(String source) {
-        if (instance == null)
-            instance = new PropertiesMaker(source);
+    private static PropertiesMaker getInstance(String resourceFile) {
+        if (instance == null) {
+            instance = new PropertiesMaker(resourceFile);
+        } else if(!source.equals(resourceFile)) {
+            instance = new PropertiesMaker(resourceFile);
+        }
         return instance;
     }
 }

@@ -2,7 +2,6 @@ package com.gcloud.tracker.web;
 
 import com.gcloud.tracker.web.LoginServlet;
 import com.gcloud.tracker.web.LoginServlet;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import javax.servlet.RequestDispatcher;

@@ -16,22 +16,25 @@ import java.util.List;
 
 @WebServlet("/mainPage")
 public class MainServlet extends HttpServlet {
-//    UserDAO userDAO = new UserDAO();
-    TaskDAO taskDAO = new TaskDAO();
+    private static final TaskDAO taskDAO = new TaskDAO();
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
         List<Task> taskList;
         //User user = (User) req.getAttribute("user");
         User user = (User) req.getSession().getAttribute("user");
-        taskList = taskDAO.findTaskByUserIdAndDate(user.getId(), LocalDate.now());
-        req.setAttribute("tasks", taskList);
-        req.setAttribute("date", LocalDate.now());
-        req.getRequestDispatcher("/WEB-INF/mainPage.jsp").forward(req, resp);
+        if(user == null){ //redirect unauthorized user to login page
+            resp.sendRedirect("/");
+        } else {
+            taskList = taskDAO.findTaskByUserIdAndDate(user.getId(), LocalDate.now());
+            req.setAttribute("tasks", taskList);
+            req.setAttribute("date", LocalDate.now());
+            req.getRequestDispatcher("/WEB-INF/mainPage.jsp").forward(req, resp);
+        }
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         req.setCharacterEncoding("UTF-8");
         Task task = new Task();
         task.setDescription(req.getParameter("description"));

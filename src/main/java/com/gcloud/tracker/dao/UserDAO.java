@@ -10,6 +10,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -24,8 +26,9 @@ import java.util.Optional;
 public class UserDAO {
     private static final Logger log = LoggerFactory.getLogger(UserDAO.class);
 
-    private final String SQL_FIND_BY_LOGIN = "SELECT * FROM time_tracker.users WHERE login=?";
-    private final String SQL_ADD_USER = "INSERT INTO time_tracker.users" +
+    private static final String SQL_FIND_BY_LOGIN = "SELECT * FROM time_tracker.users WHERE login=?";
+    private static final String SQL_FIND_ALL = "SELECT * FROM time_tracker.users";
+    private static final String SQL_ADD_USER = "INSERT INTO time_tracker.users" +
             "(login, first_name, last_name, password, role_id)  VALUES (?, ?, ?, ?, ?)";
 
 
@@ -50,8 +53,26 @@ public class UserDAO {
                             .setRoleID(resultSet.getInt("role_id")));
                 }
             }
-
         return Optional.empty();
+    }
+
+    @SneakyThrows
+    public List<User> findAll(){
+        try (Connection conn = ConnectionMaker.getInstance().getConnection();
+             PreparedStatement preparedStatement = conn.prepareStatement(SQL_FIND_ALL)) {
+            List <User> users = new ArrayList<>();
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                users.add(new User()
+                        .setId(resultSet.getInt("id"))
+                        .setLogin(resultSet.getString("login"))
+                        .setFirstName(resultSet.getString("first_name"))
+                        .setLastName(resultSet.getString("last_name"))
+                        .setPassword(resultSet.getString("password"))
+                        .setRoleID(resultSet.getInt("role_id")));
+            }
+            return users;
+        }
     }
 
     /**

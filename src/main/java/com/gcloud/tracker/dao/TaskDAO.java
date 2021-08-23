@@ -56,34 +56,33 @@ public class TaskDAO {
     }
 
     public Optional<Task> getById(Integer id) {
-        Task task = null;
         try (
                 Connection conn = ConnectionMaker.getInstance().getConnection();
-                PreparedStatement ps = conn.prepareStatement(SQL_FIND_TASK_BY_ID);
+                PreparedStatement ps = conn.prepareStatement(SQL_FIND_TASK_BY_ID)
         ) {
             ps.setInt(1, id);
             ResultSet resultSet = ps.executeQuery();
-            while (resultSet.next()){
+            if (resultSet.next()){
                 Integer user_id = resultSet.getInt("user_id");
                 LocalDate date = Date.valueOf(resultSet.getString("date")).toLocalDate();
                 String description = resultSet.getString("description");
                 Integer hour = resultSet.getInt("hours");
                 Integer minutes = resultSet.getInt("minutes");
-                task = new Task(id, user_id, date, description, hour, minutes);
+                return Optional.of(new Task(id, user_id, date, description, hour, minutes));
             }
         } catch (SQLException se) {
             log.error("Can't connect to database", se);
         } catch (ClassNotFoundException e) {
             log.error("Can't find database driver", e);
         }
-        return Optional.of(task);
+        return Optional.empty();
     }
 
     public List<Task> findTaskByUserIdAndDate(Integer userId, LocalDate date){
         List<Task> tasks = new ArrayList<>();
         try (
                 Connection conn = ConnectionMaker.getInstance().getConnection();
-                PreparedStatement ps = conn.prepareStatement(SQL_FIND_TASK_BY_USER_ID_AND_DATE);
+                PreparedStatement ps = conn.prepareStatement(SQL_FIND_TASK_BY_USER_ID_AND_DATE)
         ) {
             ps.setInt(1, userId);
             ps.setDate(2, Date.valueOf(date));
@@ -108,7 +107,6 @@ public class TaskDAO {
             ps.setInt(4, task.getHours());
             ps.setInt(5, task.getMinutes());
             ps.executeUpdate();
-            conn.commit();
         } catch (SQLException se) {
             log.error("Can't connect to database", se);
         } catch (ClassNotFoundException e) {
@@ -128,7 +126,6 @@ public class TaskDAO {
             ps.setInt(5, task.getMinutes());
             ps.setInt(6, task.getId());
             ps.executeUpdate();
-            conn.commit();
         } catch (SQLException se) {
             log.error("Can't connect to database", se);
         } catch (ClassNotFoundException e) {
@@ -143,7 +140,6 @@ public class TaskDAO {
         ) {
             ps.setInt(1, id);
             ps.execute();
-            conn.commit();
         } catch (SQLException se) {
             log.error("Can't connect to database", se);
         } catch (ClassNotFoundException e) {
