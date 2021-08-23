@@ -76,7 +76,7 @@ public class ReportAssembler {
     protected void prepareTaskBlock(Task task, Document document, Font font) throws DocumentException {
         Chunk chunk = new Chunk(
                 task.getDescription() + ": " + task.getHours() +
-                        " часов, " + task.getMinutes() + " минут.",
+                        " ч., " + task.getMinutes() + " мин.",
                 font);
         document.add(chunk);
         document.add(new Paragraph());
