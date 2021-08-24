@@ -10,11 +10,11 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -53,16 +53,10 @@ public class UserServiceTest {
     }
 
     @Test
-    public void findAllUsersTest() throws NoSuchFieldException {
-        serviceClass = UserService.class;
-        serviceClass.getDeclaredField("userDAO").setAccessible(true);
-        //Field modifiersField = Field.class.getDeclaredField("modifiers");
+    public void findAllUsersTest() throws Exception {
 
-        modifiersField.setAccessible(true);
-        modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
-        field.set(null, newValue);
-
-        //ReflectionTestUtils.setField(service, "excelSettingService", excelSettingService);
+/*        serviceClass = UserService.class;
+        serviceClass.getDeclaredField("userDAO").setAccessible(true);*/
 
         when(dao.findAll()).thenReturn(listUsers);
         //given(dao.findAll()).willReturn(listUsers);
@@ -71,5 +65,15 @@ public class UserServiceTest {
 
         assertThat(userExist).isEqualTo(listUsers);
         // assertEquals
+    }
+
+    static void setFinalStatic(Field field, Object newValue) throws Exception {
+        field.setAccessible(true);
+
+        Field modifiersField = Field.class.getDeclaredField("modifiers");
+        modifiersField.setAccessible(true);
+        modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
+
+        field.set(null, newValue);
     }
 }

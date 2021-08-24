@@ -14,13 +14,13 @@ import java.io.IOException;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.assertThat;
 
-public class MainServletTest {
+public class CreateServletTest {
 
     @Test
-    public void doGet() throws IOException {
+    public void doGetTest() throws IOException {
         // Given
         String name = RandomStringUtils.randomAlphabetic( 8 );
-        HttpUriRequest request = new HttpGet( "http://localhost:8088/HomeWork5_war_exploded/mainPage" + name);
+        HttpUriRequest request = new HttpGet( "http://localhost:8088/HomeWork5_war_exploded/createUser/" + name );
 
         // When
         HttpResponse httpResponse = HttpClientBuilder.create().build().execute(request);
@@ -32,10 +32,10 @@ public class MainServletTest {
     }
 
     @Test
-    public void doPost() throws IOException {
+    public void doPostTest() throws IOException {
         // Given
         String name = RandomStringUtils.randomAlphabetic( 8 );
-        HttpUriRequest request = new HttpPost( "http://localhost:8088/HomeWork5_war_exploded/mainPage" + name);
+        HttpUriRequest request = new HttpPost( "http://localhost:8088/HomeWork5_war_exploded/createUser/" + name);
 
         // When
         HttpResponse httpResponse = HttpClientBuilder.create().build().execute(request);
@@ -45,26 +45,4 @@ public class MainServletTest {
                 httpResponse.getStatusLine().getStatusCode(),
                 equalTo(HttpStatus.SC_NOT_FOUND));
     }
-
-/*    private final static String path = "/WEB-INF/mainPage.jsp";
-
-    @Ignore
-    @Test
-    public void whenCallDoGetMainServletReturnIndexPageWithTaskList() throws ServletException, IOException {
-
-        final MainServlet servlet = new MainServlet();
-        User user = new User();
-
-        final HttpServletRequest request = mock(HttpServletRequest.class);
-        final HttpServletResponse response = mock(HttpServletResponse.class);
-        final RequestDispatcher dispatcher = mock(RequestDispatcher.class);
-
-        when(request.getRequestDispatcher(path)).thenReturn(dispatcher);
-        when(request.getAttribute("user")).thenReturn(user);
-
-        servlet.doGet(request, response);
-
-        verify(request, times(1)).getRequestDispatcher(path);   // analogue assert in JUnit
-        verify(dispatcher).forward(request, response);
-    }*/
 }
