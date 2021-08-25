@@ -6,8 +6,10 @@ import com.gcloud.tracker.model.User;
 import java.util.List;
 
 public class UserService {
-    private final UserDAO userDAO = new UserDAO();
+
+    UserDAO userDAO = new UserDAO();
+
     public List<User> findAllUsers(){
-        return userDAO.findAll();
+        return userDAO.getAll();
     }
 }

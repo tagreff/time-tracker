@@ -8,7 +8,8 @@ import java.util.List;
 
 public class TaskService {
 
-    private final TaskDAO taskDAO = new TaskDAO();
+    TaskDAO taskDAO = TaskDAO.getInstance();
+
     public List<Task> getDailyUserTask(Integer id, LocalDate today) {
         return taskDAO.findTaskByUserIdAndDate(id, today);
     }
