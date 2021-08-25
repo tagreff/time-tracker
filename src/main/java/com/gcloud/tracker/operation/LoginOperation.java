@@ -1,4 +1,4 @@
-package com.gcloud.tracker.web;
+package com.gcloud.tracker.operation;
 
 import com.gcloud.tracker.dao.UserDAO;
 import com.gcloud.tracker.model.User;
@@ -8,8 +8,6 @@ import lombok.SneakyThrows;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -19,8 +17,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-@WebServlet("/")
-public class LoginServlet extends HttpServlet {
+public class LoginOperation implements Operation{
     UserDAO userDAO = new UserDAO();
     static {
         final int MINUTES_IN_DAY = 1440; // 24:00
@@ -36,7 +33,7 @@ public class LoginServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws UnsupportedEncodingException {
+    public void doPost(HttpServletRequest req, HttpServletResponse resp) throws UnsupportedEncodingException {
         req.setCharacterEncoding("UTF-8");
         Optional<User> user = userDAO.findByLogin(req.getParameter("login"));
         if (user.isPresent()){
@@ -59,5 +56,5 @@ public class LoginServlet extends HttpServlet {
 
         resp.sendRedirect("/?error&");
     }
-}
 
+}

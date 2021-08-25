@@ -7,6 +7,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import javax.servlet.RequestDispatcher;
@@ -21,7 +22,7 @@ import static org.mockito.Mockito.*;
 
 public class LoginServletTest {
 
-    private final static String path = "/WEB-INF/index.jsp";
+    /*private final static String path = "/WEB-INF/index.jsp";
 
     @Test
     public void whenCallDoGetThenServletReturnIndexPage() throws ServletException, IOException {
@@ -68,5 +69,5 @@ public class LoginServletTest {
         assertThat(
                 httpResponse.getStatusLine().getStatusCode(),
                 equalTo(HttpStatus.SC_NOT_FOUND));
-    }
+    }*/
 }
