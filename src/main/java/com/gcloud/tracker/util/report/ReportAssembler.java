@@ -24,10 +24,10 @@ public class ReportAssembler {
     TaskService taskService = new TaskService(new TaskDAO());
 
     public void assemblePdf(String pdfPath)  {
+        Document document = null;
         try {
             //Prepare document for assembling
-            Document document = new Document();
-            //file will be saved to ./src/report.pdf TODO: change file location
+            document = new Document();
             PdfWriter.getInstance(document, new FileOutputStream(pdfPath));
             document.open();
             BaseFont bf = BaseFont.createFont("./fonts/consola.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
@@ -51,13 +51,16 @@ public class ReportAssembler {
                 document.add(new Paragraph("\n"));
                 count++;
             }
-            document.close();//don't forget to close resources!!
         } catch (FileNotFoundException fe){
             log.error("File Not Found!", fe);
         } catch (DocumentException de){
             log.error("itextpdf library exception!", de);
         } catch (IOException e) {
             log.error("IO Exception occured!", e);
+        } finally {
+            if(document != null) {
+                document.close();
+            }
         }
     }
 
@@ -78,7 +81,7 @@ public class ReportAssembler {
     protected void prepareTaskBlock(Task task, Document document, Font font) throws DocumentException {
         Chunk chunk = new Chunk(
                 task.getDescription() + ": " + task.getHours() +
-                        " часов, " + task.getMinutes() + " минут.",
+                        " ч., " + task.getMinutes() + " мин.",
                 font);
         document.add(chunk);
         document.add(new Paragraph());
