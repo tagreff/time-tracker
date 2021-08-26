@@ -1,5 +1,6 @@
-package com.gcloud.tracker.web;
+package com.gcloud.tracker.action;
 
+import com.gcloud.tracker.util.PropertiesMaker;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -9,17 +10,20 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.util.Properties;
 
 import static org.hamcrest.core.IsEqual.equalTo;
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.*;
 
-public class ChangeTaskServletTest {
+public class ChangeTaskActionTest {
+    private static final Properties props = PropertiesMaker.getProps("test.properties");
+    String URL = props.getProperty("url");
 
     @Test
     public void doPost() throws IOException {
         // Given
         String name = RandomStringUtils.randomAlphabetic( 8 );
-        HttpUriRequest request = new HttpPost( "http://localhost:8088/HomeWork5_war_exploded/changeTask/" + name );
+        HttpUriRequest request = new HttpPost( URL + "changeTask/" + name );
 
         // When
         HttpResponse httpResponse = HttpClientBuilder.create().build().execute(request);

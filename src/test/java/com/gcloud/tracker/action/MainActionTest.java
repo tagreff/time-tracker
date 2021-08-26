@@ -1,5 +1,6 @@
-package com.gcloud.tracker.web;
+package com.gcloud.tracker.action;
 
+import com.gcloud.tracker.util.PropertiesMaker;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -10,17 +11,20 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.util.Properties;
 
 import static org.hamcrest.core.IsEqual.equalTo;
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.*;
 
-public class MainServletTest {
+public class MainActionTest {
+    private static final Properties props = PropertiesMaker.getProps("test.properties");
+    String URL = props.getProperty("url");
 
     @Test
     public void doGet() throws IOException {
         // Given
         String name = RandomStringUtils.randomAlphabetic( 8 );
-        HttpUriRequest request = new HttpGet( "http://localhost:8088/HomeWork5_war_exploded/mainPage" + name);
+        HttpUriRequest request = new HttpGet( URL+ "mainPage/" + name);
 
         // When
         HttpResponse httpResponse = HttpClientBuilder.create().build().execute(request);
@@ -35,7 +39,7 @@ public class MainServletTest {
     public void doPost() throws IOException {
         // Given
         String name = RandomStringUtils.randomAlphabetic( 8 );
-        HttpUriRequest request = new HttpPost( "http://localhost:8088/HomeWork5_war_exploded/mainPage" + name);
+        HttpUriRequest request = new HttpPost(URL + "mainPage/" + name);
 
         // When
         HttpResponse httpResponse = HttpClientBuilder.create().build().execute(request);
@@ -67,4 +71,5 @@ public class MainServletTest {
         verify(request, times(1)).getRequestDispatcher(path);   // analogue assert in JUnit
         verify(dispatcher).forward(request, response);
     }*/
+
 }
