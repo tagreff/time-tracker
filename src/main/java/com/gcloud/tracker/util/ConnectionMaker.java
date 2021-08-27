@@ -33,7 +33,7 @@ public class ConnectionMaker {
      * Get instance of current class.
      *
      * @return instance of ConnectionMaker.
-     * @throws SQLException if connection to database failed.
+     * @throws SQLException           if connection to database failed.
      * @throws ClassNotFoundException if driver not found.
      */
     public static ConnectionMaker getInstance() throws SQLException, ClassNotFoundException {

@@ -10,15 +10,13 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 /**
  * Class UserDAO
- *
+ * <p>
  * Data Access Object.
  *
  * @author Oleksandr Storozhuk
@@ -36,16 +34,17 @@ public class UserDAO {
 
     /**
      * Find user by login
+     *
      * @param login - unique user login string
      * @return <code>User</code> wrapped into <code>Optional</code> if exists, else Optional.empty().
      */
     @SneakyThrows
-    public Optional<User> findByLogin(String login){
+    public Optional<User> findByLogin(String login) {
         try (Connection conn = ConnectionMaker.getInstance().getConnection();
              PreparedStatement preparedStatement = conn.prepareStatement(SQL_FIND_BY_LOGIN)) {
             preparedStatement.setString(1, login);
             ResultSet resultSet = preparedStatement.executeQuery();
-            if(resultSet.next()){
+            if (resultSet.next()) {
                 return Optional.of(new User()
                         .setId(resultSet.getInt("id"))
                         .setLogin(resultSet.getString("login"))
@@ -59,10 +58,10 @@ public class UserDAO {
     }
 
     @SneakyThrows
-    public List<User> findAll(){
+    public List<User> findAll() {
         try (Connection conn = ConnectionMaker.getInstance().getConnection();
              PreparedStatement preparedStatement = conn.prepareStatement(SQL_FIND_ALL)) {
-            List <User> users = new ArrayList<>();
+            List<User> users = new ArrayList<>();
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 users.add(new User()
@@ -79,14 +78,15 @@ public class UserDAO {
 
     /**
      * Add User to data source.
+     *
      * @param user - user to add.
      * @return true if success, else false.
      */
     public boolean addUser(User user) {
-        if(user == null )
+        if (user == null)
             return false;
         try (Connection conn = ConnectionMaker.getInstance().getConnection()) {
-            try(PreparedStatement preparedStatement = conn.prepareStatement(SQL_ADD_USER)) {
+            try (PreparedStatement preparedStatement = conn.prepareStatement(SQL_ADD_USER)) {
                 preparedStatement.setString(1, user.getLogin());
                 preparedStatement.setString(2, user.getFirstName());
                 preparedStatement.setString(3, user.getLastName());

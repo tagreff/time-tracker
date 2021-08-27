@@ -8,7 +8,7 @@ import java.util.Properties;
 
 /**
  * Class PropertiesMaker
- *
+ * <p>
  * Provides Properties object from property file.
  * Initially, /tomcat/conf/ directory checked for properties file first.
  * Project resources directory checked if file not exists.
@@ -36,7 +36,7 @@ public class PropertiesMaker {
     }
 
     private InputStream getResourcesStream(String resourceFile) throws IOException {
-        if(System.getProperty("catalina.base") != null) {
+        if (System.getProperty("catalina.base") != null) {
             String path = System.getProperty("catalina.base")
                     .concat(File.separator)
                     .concat("conf")
@@ -63,7 +63,7 @@ public class PropertiesMaker {
     private static PropertiesMaker getInstance(String resourceFile) {
         if (instance == null) {
             instance = new PropertiesMaker(resourceFile);
-        } else if(!source.equals(resourceFile)) {
+        } else if (!source.equals(resourceFile)) {
             instance = new PropertiesMaker(resourceFile);
         }
         return instance;

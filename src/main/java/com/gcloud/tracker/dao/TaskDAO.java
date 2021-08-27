@@ -32,18 +32,44 @@ public class TaskDAO {
 
     private final static Logger log = LoggerFactory.getLogger(TaskDAO.class);
 
-    private static final String SQL_FIND_TASK_BY_ID = "SELECT * FROM time_tracker.tasks WHERE id=?";
-    private static final String SQL_FIND_ALL_TASK = "SELECT * FROM time_tracker.tasks";
-    private static final String SQL_FIND_TASK_BY_USER_ID_AND_DATE = "SELECT * FROM time_tracker.tasks WHERE user_id = ? AND date = ?";
-    private static final String SQL_CREATE_TASK = "INSERT INTO time_tracker.tasks(user_id, date, description, hours, minutes) VALUES (?, ?, ?, ?, ?)";
-    private static final String SQL_EDIT_TASK = "UPDATE time_tracker.tasks SET user_id=?, date=?, description=?, hours=?, minutes=? WHERE id=?";
-    private static final String SQL_DELETE_TASK = "DELETE FROM time_tracker.tasks WHERE id=?";
+    private static final String SQL_FIND_TASK_BY_ID =
+                    "SELECT " +
+                    "* " +
+                    "FROM time_tracker.tasks " +
+                    "WHERE id=?";
+
+    private static final String SQL_FIND_ALL_TASK =
+                    "SELECT " +
+                    "* " +
+                    "FROM time_tracker.tasks";
+
+    private static final String SQL_FIND_TASK_BY_USER_ID_AND_DATE =
+                    "SELECT " +
+                    "* " +
+                    "FROM time_tracker.tasks " +
+                    "WHERE user_id = ? " +
+                    "AND date = ?";
+
+    private static final String SQL_CREATE_TASK =
+                    "INSERT " +
+                    "INTO time_tracker.tasks(user_id, date, description, hours, minutes) " +
+                    "VALUES (?, ?, ?, ?, ?)";
+
+    private static final String SQL_EDIT_TASK =
+                    "UPDATE time_tracker.tasks " +
+                    "SET user_id=?, date=?, description=?, hours=?, minutes=? " +
+                    "WHERE id=?";
+
+    private static final String SQL_DELETE_TASK =
+                    "DELETE " +
+                    "FROM time_tracker.tasks " +
+                    "WHERE id=?";
 
     public List<Task> getAll() {
         List<Task> tasks = new ArrayList<>();
         try (
-             Connection conn = ConnectionMaker.getInstance().getConnection();
-             Statement statement = conn.createStatement()
+                Connection conn = ConnectionMaker.getInstance().getConnection();
+                Statement statement = conn.createStatement()
         ) {
             ResultSet resultSet = statement.executeQuery(SQL_FIND_ALL_TASK);
             getListTasks(tasks, resultSet);
@@ -62,7 +88,7 @@ public class TaskDAO {
         ) {
             ps.setInt(1, id);
             ResultSet resultSet = ps.executeQuery();
-            if (resultSet.next()){
+            if (resultSet.next()) {
                 Integer user_id = resultSet.getInt("user_id");
                 LocalDate date = Date.valueOf(resultSet.getString("date")).toLocalDate();
                 String description = resultSet.getString("description");
@@ -78,7 +104,7 @@ public class TaskDAO {
         return Optional.empty();
     }
 
-    public List<Task> findTaskByUserIdAndDate(Integer userId, LocalDate date){
+    public List<Task> findTaskByUserIdAndDate(Integer userId, LocalDate date) {
         List<Task> tasks = new ArrayList<>();
         try (
                 Connection conn = ConnectionMaker.getInstance().getConnection();

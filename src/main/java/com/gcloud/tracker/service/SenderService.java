@@ -1,8 +1,8 @@
 package com.gcloud.tracker.service;
 
+import com.gcloud.tracker.util.report.PdfSender;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.gcloud.tracker.util.report.PdfSender;
 
 
 /**
@@ -15,7 +15,7 @@ public class SenderService implements Runnable {
 
     @Override
     public void run() {
-        if(PdfSender.sendPdf())
+        if (PdfSender.sendPdf())
             log.info("SenderService thread workout success!");
         else
             log.warn("Report wasn't send by SenderService.");

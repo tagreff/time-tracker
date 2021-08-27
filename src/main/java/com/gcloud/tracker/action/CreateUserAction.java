@@ -11,6 +11,7 @@ import java.io.IOException;
 
 public class CreateUserAction implements Action {
     UserDAO userDAO = new UserDAO();
+
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");

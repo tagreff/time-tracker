@@ -6,7 +6,7 @@ import java.util.Map;
 
 public class ActionFactory {
 
-    static Map<String, Action> actions = new HashMap();
+    static Map<String, Action> actions = new HashMap<>();
 
     static {
         actions.put("/changeTask", new ChangeTaskAction());
