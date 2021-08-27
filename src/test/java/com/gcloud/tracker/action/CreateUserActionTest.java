@@ -8,6 +8,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -20,6 +21,7 @@ public class CreateUserActionTest {
     private static final Properties props = PropertiesMaker.getProps("test.properties");
     String URL = props.getProperty("url");
 
+    @Ignore
     @Test
     public void doGetTest() throws IOException {
         // Given
@@ -35,6 +37,7 @@ public class CreateUserActionTest {
                 equalTo(HttpStatus.SC_NOT_FOUND));
     }
 
+    @Ignore
     @Test
     public void doPostTest() throws IOException {
         // Given

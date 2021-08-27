@@ -8,6 +8,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import javax.servlet.RequestDispatcher;
@@ -28,6 +29,7 @@ public class LoginActionTest {
     private static final Properties props = PropertiesMaker.getProps("test.properties");
     String URL = props.getProperty("url");
 
+    @Ignore
     @Test
     public void whenCallDoGetThenServletReturnIndexPage() throws ServletException, IOException {
 
@@ -45,6 +47,7 @@ public class LoginActionTest {
         verify(dispatcher).forward(request, response);
     }
 
+    @Ignore
     @Test
     public void doGet() throws IOException {
         // Given
@@ -60,6 +63,7 @@ public class LoginActionTest {
                 equalTo(HttpStatus.SC_NOT_FOUND));
     }
 
+    @Ignore
     @Test
     public void doPost() throws IOException {
         // Given
