@@ -1,5 +1,7 @@
 package com.gcloud.tracker.util.report;
 
+import com.gcloud.tracker.dao.TaskDAO;
+import com.gcloud.tracker.dao.UserDAO;
 import com.gcloud.tracker.model.Task;
 import com.gcloud.tracker.model.User;
 import com.gcloud.tracker.service.TaskService;
@@ -18,8 +20,8 @@ import java.util.ArrayList;
 
 public class ReportAssembler {
     private static final Logger log = LoggerFactory.getLogger(ReportAssembler.class);
-    UserService userService = new UserService();
-    TaskService taskService = new TaskService();
+    UserService userService = new UserService(new UserDAO());
+    TaskService taskService = new TaskService(new TaskDAO());
 
     public void assemblePdf(String pdfPath)  {
         Document document = null;
