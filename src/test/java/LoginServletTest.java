@@ -1,4 +1,5 @@
-import com.gcloud.tracker.web.LoginServlet;
+
+import com.gcloud.tracker.web.Servlet;
 import org.junit.Test;
 
 import javax.servlet.RequestDispatcher;
@@ -19,7 +20,7 @@ public class LoginServletTest {
     @Test
     public void whenCallDoGetThenServletReturnIndexPage() throws ServletException, IOException {
 
-        final LoginServlet servlet = new LoginServlet();
+        final Servlet servlet = new Servlet();
 
         final HttpServletRequest request = mock(HttpServletRequest.class);
         final HttpServletResponse response = mock(HttpServletResponse.class);

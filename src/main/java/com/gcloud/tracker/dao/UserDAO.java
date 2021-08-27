@@ -42,19 +42,19 @@ public class UserDAO {
     @SneakyThrows
     public Optional<User> findByLogin(String login){
         try (Connection conn = ConnectionMaker.getInstance().getConnection();
-            PreparedStatement preparedStatement = conn.prepareStatement(SQL_FIND_BY_LOGIN)) {
-                preparedStatement.setString(1, login);
-                ResultSet resultSet = preparedStatement.executeQuery();
-                if(resultSet.next()){
-                    return Optional.of(new User()
-                            .setId(resultSet.getInt("id"))
-                            .setLogin(resultSet.getString("login"))
-                            .setFirstName(resultSet.getString("first_name"))
-                            .setLastName(resultSet.getString("last_name"))
-                            .setPassword(resultSet.getString("password"))
-                            .setRoleID(resultSet.getInt("role_id")));
-                }
+             PreparedStatement preparedStatement = conn.prepareStatement(SQL_FIND_BY_LOGIN)) {
+            preparedStatement.setString(1, login);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if(resultSet.next()){
+                return Optional.of(new User()
+                        .setId(resultSet.getInt("id"))
+                        .setLogin(resultSet.getString("login"))
+                        .setFirstName(resultSet.getString("first_name"))
+                        .setLastName(resultSet.getString("last_name"))
+                        .setPassword(resultSet.getString("password"))
+                        .setRoleID(resultSet.getInt("role_id")));
             }
+        }
         return Optional.empty();
     }
 
