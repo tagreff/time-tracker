@@ -33,6 +33,6 @@ public class ChangeTaskActionTest {
         // Then
         assertThat(
                 httpResponse.getStatusLine().getStatusCode(),
-                equalTo(HttpStatus.SC_INTERNAL_SERVER_ERROR));
+                equalTo(HttpStatus.SC_NOT_FOUND));
     }
 }
