@@ -17,7 +17,7 @@ public class Servlet extends HttpServlet {
     private Map<String, Action> actions = new HashMap<>();
 
     @Override
-    public void init() throws ServletException {
+    public void init() {
         actions.put("/changeTask", new ChangeTaskAction());
         actions.put("/createUser", new CreateUserAction());
         actions.put("/deleteTask", new DeleteTaskAction());
