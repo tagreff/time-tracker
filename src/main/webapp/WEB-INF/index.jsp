@@ -19,20 +19,20 @@
     <div class="card">
         <div class="card-body">
             <form action="${pageContext.request.contextPath}/" method="post">
-                <fieldset class="form-group">
-                    <label>Login:
-                        <input name="login" type="text" required="required">
-                    </label>
-                </fieldset>
-                <fieldset class="form-group">
-                    <label>Password:
-                        <input name="password" type="text" required="required">
-                    </label>
-                </fieldset>
-                <fieldset class="form-group">
-                    <button type="submit">Login</button>
+
+                <form>
+                    <div class="mb-3">
+                        <label class="form-label">Login</label>
+                        <input type="text" class="form-control" name="login" required="required">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Password</label>
+                        <input type="password" class="form-control" name="password" required="required">
+                    </div>
+                    <button type="submit" class="btn btn-success">Login</button>
                     <c:if test="${param.error != null}">
-                </fieldset>
+                </form>
+
                 <div style="color: red">
                     <span>Login or password is not correct</span>
                 </div>
