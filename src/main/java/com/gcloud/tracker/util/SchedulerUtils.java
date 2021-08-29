@@ -14,8 +14,10 @@ import java.time.ZonedDateTime;
  */
 public class SchedulerUtils {
     private final static Logger log = LoggerFactory.getLogger(SchedulerUtils.class);
+
     /**
      * Calculates the time to the required time label in minutes.
+     *
      * @param minutesTimeStump time label in minutes
      * @return time in minutes left for the needed time label.
      */
@@ -25,7 +27,7 @@ public class SchedulerUtils {
         ZonedDateTime nowEuMSK = ZonedDateTime.ofInstant(nowUtc, euMSK);
 
         int currTimeMin = nowEuMSK.getHour() * 60 + nowEuMSK.getMinute();
-        if(currTimeMin < minutesTimeStump) {
+        if (currTimeMin < minutesTimeStump) {
             return minutesTimeStump - currTimeMin;
         } else {
             return 1440 - currTimeMin + minutesTimeStump;

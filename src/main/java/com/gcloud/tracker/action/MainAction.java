@@ -13,12 +13,13 @@ import java.util.List;
 
 public class MainAction implements Action {
     private static final TaskDAO taskDAO = new TaskDAO();
+
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
         List<Task> taskList;
         User user = (User) req.getSession().getAttribute("user");
-        if(user == null){ //redirect unauthorized user to login page
+        if (user == null) { //redirect unauthorized user to login page
             resp.sendRedirect("/");
         } else {
             taskList = taskDAO.findTaskByUserIdAndDate(user.getId(), LocalDate.now());

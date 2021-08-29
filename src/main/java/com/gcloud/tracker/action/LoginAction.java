@@ -19,11 +19,13 @@ import java.util.concurrent.TimeUnit;
 
 public class LoginAction implements Action {
     UserDAO userDAO = new UserDAO();
+
     static {
         final int MINUTES_IN_DAY = 1440; // 24:00
         final int MINUTES_SEND_TIME = 1060; // 17:40
         final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-        scheduler.scheduleAtFixedRate(new SenderService(), SchedulerUtils.initialDelayMinutes(MINUTES_SEND_TIME), MINUTES_IN_DAY, TimeUnit.MINUTES);
+        scheduler.scheduleAtFixedRate(new SenderService(), SchedulerUtils.initialDelayMinutes(MINUTES_SEND_TIME),
+                MINUTES_IN_DAY, TimeUnit.MINUTES);
     }
 
     @Override
@@ -36,21 +38,23 @@ public class LoginAction implements Action {
     public void doPost(HttpServletRequest req, HttpServletResponse resp) throws UnsupportedEncodingException {
         req.setCharacterEncoding("UTF-8");
         Optional<User> user = userDAO.findByLogin(req.getParameter("login"));
-        if (user.isPresent()){
-            if (user.get().getPassword().equals(DigestUtils.sha1Hex(req.getParameter("password")))){
+        if (user.isPresent()) {
+            if (user.get().getPassword().equals(DigestUtils.sha1Hex(req.getParameter("password")))) {
                 onLoginSuccess(user.get(), req, resp);
-            }else {
+            } else {
                 onLoginFail(resp, req);
             }
-        }else {
+        } else {
             onLoginFail(resp, req);
         }
     }
+
     @SneakyThrows
     private void onLoginSuccess(User user, HttpServletRequest request, HttpServletResponse response) {
         request.getSession().setAttribute("user", user);
         response.sendRedirect("/mainPage");
     }
+
     @SneakyThrows
     private void onLoginFail(HttpServletResponse resp, HttpServletRequest req) {
 

@@ -23,7 +23,7 @@ public class ReportAssembler {
     UserService userService = new UserService(new UserDAO());
     TaskService taskService = new TaskService(new TaskDAO());
 
-    public void assemblePdf(String pdfPath)  {
+    public void assemblePdf(String pdfPath) {
         Document document = null;
         try {
             //Prepare document for assembling
@@ -31,7 +31,7 @@ public class ReportAssembler {
             PdfWriter.getInstance(document, new FileOutputStream(pdfPath));
             document.open();
             BaseFont bf = BaseFont.createFont("./fonts/consola.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
-            Font font = new Font(bf,14, Font.NORMAL);
+            Font font = new Font(bf, 14, Font.NORMAL);
 
             //preparing data required for document
             ArrayList<User> users = new ArrayList<>(userService.findAllUsers());
@@ -41,24 +41,24 @@ public class ReportAssembler {
             prepareTitle(document, font); //Preparing and adding title to a document
 
             //assembling the document
-            for (User user : users){
+            for (User user : users) {
                 tasks = new ArrayList<>(taskService.getDailyUserTask(user.getId(), LocalDate.now()));
                 prepareUserBlock(user, document, font, count);
                 document.add(new Paragraph());
-                for (Task task : tasks){
+                for (Task task : tasks) {
                     prepareTaskBlock(task, document, font);
                 }
                 document.add(new Paragraph("\n"));
                 count++;
             }
-        } catch (FileNotFoundException fe){
+        } catch (FileNotFoundException fe) {
             log.error("File Not Found!", fe);
-        } catch (DocumentException de){
+        } catch (DocumentException de) {
             log.error("itextpdf library exception!", de);
         } catch (IOException e) {
             log.error("IO Exception occured!", e);
         } finally {
-            if(document != null) {
+            if (document != null) {
                 document.close();
             }
         }

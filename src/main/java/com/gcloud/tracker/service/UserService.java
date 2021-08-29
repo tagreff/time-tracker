@@ -13,7 +13,7 @@ public class UserService {
         this.userDAO = userDAO;
     }
 
-    public List<User> findAllUsers(){
+    public List<User> findAllUsers() {
         return userDAO.findAll();
     }
 }

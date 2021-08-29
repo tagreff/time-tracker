@@ -5,5 +5,6 @@ import javax.servlet.http.HttpServletResponse;
 
 public interface Action {
     void doGet(HttpServletRequest request, HttpServletResponse response) throws Exception;
+
     void doPost(HttpServletRequest request, HttpServletResponse response) throws Exception;
 }

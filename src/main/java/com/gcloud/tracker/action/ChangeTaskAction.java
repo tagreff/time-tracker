@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Optional;
 
-public class ChangeTaskAction implements Action{
+public class ChangeTaskAction implements Action {
     TaskDAO taskDAO = new TaskDAO();
 
     @Override
@@ -21,8 +21,7 @@ public class ChangeTaskAction implements Action{
 
         req.setCharacterEncoding("UTF-8");
         Optional<Task> taskOptional = taskDAO.getById(Integer.parseInt(req.getParameter("id")));
-        if (taskOptional.isPresent())
-        {
+        if (taskOptional.isPresent()) {
             Task task = taskOptional.get();
             task.setDescription(req.getParameter("description"));
             task.setHours(Integer.parseInt(req.getParameter("hours")));
