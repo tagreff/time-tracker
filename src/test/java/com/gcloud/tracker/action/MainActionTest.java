@@ -1,78 +1,67 @@
 package com.gcloud.tracker.action;
 
+import com.gcloud.tracker.dao.TaskDAO;
+import com.gcloud.tracker.model.Task;
 import com.gcloud.tracker.util.PropertiesMaker;
-import org.apache.commons.lang3.RandomStringUtils;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpUriRequest;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.junit.Ignore;
 import org.junit.Test;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Properties;
 
-import static org.hamcrest.core.IsEqual.equalTo;
-import static org.junit.Assert.*;
+import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.Mockito.*;
 
 public class MainActionTest {
     private static final Properties props = PropertiesMaker.getProps("test.properties");
     String URL = props.getProperty("url");
 
-    @Ignore
     @Test
-    public void doGet() throws IOException {
-        // Given
-        String name = RandomStringUtils.randomAlphabetic( 8 );
-        HttpUriRequest request = new HttpGet( URL+ "mainPage/" + name);
+    public void doGetSetCharacterEncoding() throws IOException {
+        HttpServletRequest request = mock(HttpServletRequest.class);
+        doNothing().when(request).setCharacterEncoding(isA(String.class));
+        request.setCharacterEncoding("UTF-8");
 
-        // When
-        HttpResponse httpResponse = HttpClientBuilder.create().build().execute(request);
-
-        // Then
-        assertThat(
-                httpResponse.getStatusLine().getStatusCode(),
-                equalTo(HttpStatus.SC_NOT_FOUND));
+        verify(request, times(1)).setCharacterEncoding("UTF-8");
     }
 
-    @Ignore
     @Test
-    public void doPost() throws IOException {
-        // Given
-        String name = RandomStringUtils.randomAlphabetic( 8 );
-        HttpUriRequest request = new HttpPost(URL + "mainPage/" + name);
+    public void doPostSetCharacterEncoding() throws IOException {
+        HttpServletRequest request = mock(HttpServletRequest.class);
+        doNothing().when(request).setCharacterEncoding(isA(String.class));
+        request.setCharacterEncoding("UTF-8");
 
-        // When
-        HttpResponse httpResponse = HttpClientBuilder.create().build().execute(request);
-
-        // Then
-        assertThat(
-                httpResponse.getStatusLine().getStatusCode(),
-                equalTo(HttpStatus.SC_NOT_FOUND));
+        verify(request, times(1)).setCharacterEncoding("UTF-8");
     }
 
-/*    private final static String path = "/WEB-INF/mainPage.jsp";
-
-    @Ignore
     @Test
-    public void whenCallDoGetMainServletReturnIndexPageWithTaskList() throws ServletException, IOException {
+    public void doPostCallCreateTask() throws IOException {
+        TaskDAO taskDAO = mock(TaskDAO.class);
+        Task task = new Task();
 
-        final MainServlet servlet = new MainServlet();
-        User user = new User();
+        doNothing().when(taskDAO).create(isA(Task.class));
+        taskDAO.create(task);
 
-        final HttpServletRequest request = mock(HttpServletRequest.class);
-        final HttpServletResponse response = mock(HttpServletResponse.class);
-        final RequestDispatcher dispatcher = mock(RequestDispatcher.class);
+        verify(taskDAO, times(1)).create(task);
+    }
 
-        when(request.getRequestDispatcher(path)).thenReturn(dispatcher);
-        when(request.getAttribute("user")).thenReturn(user);
+    @Test
+    public void doPostCallSendRedirect() throws IOException {
+        HttpServletResponse response = mock(HttpServletResponse.class);
+        doNothing().when(response).sendRedirect(isA(String.class));
 
-        servlet.doGet(request, response);
+        response.sendRedirect("/mainPage");
 
-        verify(request, times(1)).getRequestDispatcher(path);   // analogue assert in JUnit
-        verify(dispatcher).forward(request, response);
-    }*/
+        verify(response, times(1)).sendRedirect("/mainPage");
+    }
 
+    @Test(expected = Exception.class)
+    public void doPostCallSendRedirectNull() throws IOException {
+        HttpServletResponse response = mock(HttpServletResponse.class);
+
+        doThrow().when(response).sendRedirect(isNull());
+
+        response.sendRedirect(null);
+    }
 }

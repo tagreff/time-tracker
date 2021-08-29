@@ -1,39 +1,49 @@
 package com.gcloud.tracker.action;
 
+import com.gcloud.tracker.dao.TaskDAO;
 import com.gcloud.tracker.util.PropertiesMaker;
-import org.apache.commons.lang3.RandomStringUtils;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpUriRequest;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.junit.Ignore;
 import org.junit.Test;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Properties;
 
-import static org.hamcrest.core.IsEqual.equalTo;
-import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 public class DeleteTaskActionTest {
     private static final Properties props = PropertiesMaker.getProps("test.properties");
     String URL = props.getProperty("url");
 
-    @Ignore
     @Test
-    public void doPost() throws IOException {
-        // Given
-        String name = RandomStringUtils.randomAlphabetic( 8 );
-        HttpUriRequest request = new HttpPost(URL + "deleteTask" + name);
+    public void whenCallDoPostThenServletCallMethodDelete() throws IOException {
 
-        // When
-        HttpResponse httpResponse = HttpClientBuilder.create().build().execute(request);
+        final TaskDAO taskDAO = mock(TaskDAO.class);
 
-        // Then
-        assertThat(
-                httpResponse.getStatusLine().getStatusCode(),
-                equalTo(HttpStatus.SC_NOT_FOUND));
+        doNothing().when(taskDAO).delete(isA(Integer.class));
+        taskDAO.delete(1);
+
+        verify(taskDAO, times(1)).delete(1);
     }
 
+    @Test(expected = Exception.class)
+    public void whenCallDoPostThenServletThrowException() throws IOException {
+
+        final TaskDAO taskDAO1 = mock(TaskDAO.class);
+        final HttpServletRequest request = mock(HttpServletRequest.class);
+        final HttpServletResponse response = mock(HttpServletResponse.class);
+
+        doThrow().when(taskDAO1).delete(isNull());
+        taskDAO1.delete(null);
+    }
+
+    @Test
+    public void whenCallDoPostThenServletCallMethodSendRedirect() throws IOException {
+        final HttpServletResponse response = mock(HttpServletResponse.class);
+
+        doNothing().when(response).sendRedirect(isA(String.class));
+        response.sendRedirect("/mainPage");
+
+        verify(response).sendRedirect("/mainPage");
+    }
 }
